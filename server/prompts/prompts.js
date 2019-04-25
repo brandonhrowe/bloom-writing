@@ -17,7 +17,6 @@ module.exports = router
 router.get('/word/random/:pos', async (req, res, next) => {
   try {
     let {pos} = req.params
-    console.log(pos)
     await unirest
       .get(
         `https://wordsapiv1.p.rapidapi.com/words/?random=true&partOfSpeech=${pos}&letterPattern=^[A-Za-z]*$`

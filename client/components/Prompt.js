@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {setPrompt} from '../store'
 
 const Prompt = ({loadPrompt, prompt, loading}) => (
-  <div>
+  <div className="prompt-container">
     <button type="button" onClick={() => loadPrompt()}>
       Load a Prompt
     </button>
@@ -36,27 +36,6 @@ const Prompt = ({loadPrompt, prompt, loading}) => (
   </div>
 )
 
-// let nounOneSyntax
-//     let nounTwoSyntax
-//     if (finalWords.nounOneForm === 'singular') {
-//       if (["a", "e", "i", "o", "u", "h"].includes(finalWords.adjective[0])) {
-//         nounOneSyntax = `an ${finalWords.adjective} ${finalWords.nounOne}`
-//       } else {
-//         nounOneSyntax = `a ${finalWords.adjective} ${finalWords.nounOne}`
-//       }
-//     } else {
-//       nounOneSyntax = `${finalWords.adjective} ${finalWords.nounOne}`
-//     }
-//     if (finalWords.nounTwoForm === 'singular') {
-//       if (["a", "e", "i", "o", "u", "h"].includes(finalWords.nounTwo[0])) {
-//         nounTwoSyntax = `an ${finalWords.nounTwo}`
-//       } else {
-//         nounTwoSyntax = `a ${finalWords.nounTwo}`
-//       }
-//     } else {
-//       nounTwoSyntax = finalWords.nounTwo
-//     }
-//     let prompt = `Write a story about ${nounOneSyntax} that ${Math.floor(Math.random() * 2) === 1 ? "could" : "would"} ${Math.floor(Math.random() * 2) === 1 && finalWords.adverb} ${finalWords.verb} ${nounTwoSyntax}`
 /**
  * CONTAINER
  */
