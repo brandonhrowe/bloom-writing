@@ -118,7 +118,7 @@ export const setPrompt = () => async dispatch => {
     } else {
       nounTwoSyntax = finalWords.nounTwo
     }
-    let prompt = `Write a story about ${nounOneSyntax} that ${Math.floor(Math.random() * 2) === 1 ? "could" : "would"} ${finalWords.verb} ${nounTwoSyntax}`
+    let prompt = `Write a story about ${nounOneSyntax} that ${Math.floor(Math.random() * 2) === 1 ? "could" : "would"} ${Math.floor(Math.random() * 2) === 1 && finalWords.adverb} ${finalWords.verb} ${nounTwoSyntax}`
     console.log(prompt)
     console.log(finalWords)
     dispatch(getPrompt(finalWords))
