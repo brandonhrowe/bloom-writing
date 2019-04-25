@@ -3,19 +3,36 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 // import {setStory} from '../store'
+import socket from '../socket'
 
-const Prompt = ({story}) => (
-  <div className="story-container">
-    <textarea className="story"></textarea>
-  </div>
-)
+class Prompt extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      timestamp: "no timestamp",
+      text: ""
+    }
+  }
+  render() {
+    return (
+      <div className="story-container">
+        <textarea
+          className="story"
+          rows="10"
+          cols="50"
+          placeholder="Start your story here..."
+        />
+      </div>
+    )
+  }
+}
 
 /**
  * CONTAINER
  */
 const mapState = state => {
   return {
-    story: ""
+    story: ''
   }
 }
 
