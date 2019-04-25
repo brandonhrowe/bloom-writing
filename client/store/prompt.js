@@ -97,30 +97,30 @@ export const setPrompt = () => async dispatch => {
       finalWords.nounTwoForm = nounCheckMeaningCloud(nounCheck.data).form
     } //gets random noun and performs check; will start from the beginning if it is an invalid noun
     finalWords.nounTwoDefinition = nTwo.data.results.filter(result => result.partOfSpeech === "noun")[0].definition
-    console.log(finalWords)
-    let nounOneSyntax
-    let nounTwoSyntax
-    if (finalWords.nounOneForm === 'singular') {
-      if (["a", "e", "i", "o", "u", "h"].includes(finalWords.adjective[0])) {
-        nounOneSyntax = `an ${finalWords.adjective} ${finalWords.nounOne}`
-      } else {
-        nounOneSyntax = `a ${finalWords.adjective} ${finalWords.nounOne}`
-      }
-    } else {
-      nounOneSyntax = `${finalWords.adjective} ${finalWords.nounOne}`
-    }
-    if (finalWords.nounTwoForm === 'singular') {
-      if (["a", "e", "i", "o", "u", "h"].includes(finalWords.nounTwo[0])) {
-        nounTwoSyntax = `an ${finalWords.nounTwo}`
-      } else {
-        nounTwoSyntax = `a ${finalWords.nounTwo}`
-      }
-    } else {
-      nounTwoSyntax = finalWords.nounTwo
-    }
-    let prompt = `Write a story about ${nounOneSyntax} that ${Math.floor(Math.random() * 2) === 1 ? "could" : "would"} ${Math.floor(Math.random() * 2) === 1 && finalWords.adverb} ${finalWords.verb} ${nounTwoSyntax}`
-    console.log(prompt)
-    console.log(finalWords)
+    // console.log(finalWords)
+    // let nounOneSyntax
+    // let nounTwoSyntax
+    // if (finalWords.nounOneForm === 'singular') {
+    //   if (["a", "e", "i", "o", "u", "h"].includes(finalWords.adjective[0])) {
+    //     nounOneSyntax = `an ${finalWords.adjective} ${finalWords.nounOne}`
+    //   } else {
+    //     nounOneSyntax = `a ${finalWords.adjective} ${finalWords.nounOne}`
+    //   }
+    // } else {
+    //   nounOneSyntax = `${finalWords.adjective} ${finalWords.nounOne}`
+    // }
+    // if (finalWords.nounTwoForm === 'singular') {
+    //   if (["a", "e", "i", "o", "u", "h"].includes(finalWords.nounTwo[0])) {
+    //     nounTwoSyntax = `an ${finalWords.nounTwo}`
+    //   } else {
+    //     nounTwoSyntax = `a ${finalWords.nounTwo}`
+    //   }
+    // } else {
+    //   nounTwoSyntax = finalWords.nounTwo
+    // }
+    // let prompt = `Write a story about ${nounOneSyntax} that ${Math.floor(Math.random() * 2) === 1 ? "could" : "would"} ${Math.floor(Math.random() * 2) === 1 && finalWords.adverb} ${finalWords.verb} ${nounTwoSyntax}`
+    // console.log(prompt)
+    // console.log(finalWords)
     dispatch(getPrompt(finalWords))
   } catch (err) {
     console.error(err)
