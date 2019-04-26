@@ -5,6 +5,8 @@ const getStories = prompt => {
   }
   return stories[prompt]
 }
+//These should probably be moved to a reducer...
+//Reducer should have array of all currently exitsing prompt/story pairs, and load the specific one once it has been created/selected.
 
 module.exports = io => {
   io.on('connection', socket => {
