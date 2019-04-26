@@ -13,6 +13,11 @@ class Prompt extends React.Component {
       text: ""
     }
   }
+
+  componentDidMount(){
+
+  }
+
   render() {
     return (
       <div className="story-container">

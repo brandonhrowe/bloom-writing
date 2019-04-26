@@ -12,16 +12,19 @@ module.exports = io => {
     socket.on('connect', () => {
       console.log(`Client ${socket.id} is connected`)
     })
-    socket.on('join-story', (prompt) => {
+    socket.on('join-text', (prompt) => {
+      console.log("in join-text")
       socket.join(prompt);
       const story = getStories(prompt);
-      socket.emit('replay-story', story)
+      console.log(prompt, story)
+      socket.emit('load', story)
     })
 
-    socket.on('type-from-client', (prompt, text, index) => {
+    socket.on('type-from-client', (prompt, text) => {
+      console.log('type-from-client called. Text:', text)
       let story = getStories(prompt);
-      story = story.concat(text);
-      socket.broadcast.to(prompt).emit('type-from-server', text, index);
+      stories[prompt] = story.concat(text);
+      socket.broadcast.to(prompt).emit('type-from-server', text);
     });
 
     socket.on('disconnect', () => {
