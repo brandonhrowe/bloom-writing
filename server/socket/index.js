@@ -1,7 +1,7 @@
 const stories = {}
 const getStories = prompt => {
   if (stories[prompt] === undefined) {
-    stories[prompt] = ''
+    stories[prompt] = 'Write your story here!'
   }
   return stories[prompt]
 }
@@ -22,12 +22,17 @@ module.exports = io => {
       socket.emit('load', story)
     })
 
-    socket.on('type-from-client', (prompt, text) => {
-      console.log('type-from-client called. Text:', text)
-      let story = getStories(prompt);
-      stories[prompt] = story.concat(text);
-      socket.broadcast.to(prompt).emit('type-from-server', text);
-    });
+    // socket.on('type-from-client', (prompt, text) => {
+    //   console.log('type-from-client called. Text:', text)
+    //   let story = getStories(prompt);
+    //   stories[prompt] = story.concat(text);
+    //   socket.broadcast.to(prompt).emit('type-from-server', text);
+    // });
+    socket.on('type-from-client', (prompt, content) => {
+      console.log('content updated')
+      stories[prompt] = content
+      socket.broadcast.to(prompt).emit('type-from-server', content)
+    })
 
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
@@ -6,32 +6,82 @@ import {Link} from 'react-router-dom'
 // import socket from '../socket'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import io from 'socket.io-client'
+import socketIOClient from 'socket.io-client'
 import {EventEmitter} from 'events'
-const socket = io(window.location.origin)
+// const socket = io(window.location.origin)
 const events = new EventEmitter()
+// import StoryComp from './StoryComp'
 
-class Story extends React.Component {
-  constructor() {
-    super()
+class Story extends Component {
+  constructor(props) {
+    super(props)
     this.state = {
-      story: ''
+      endpoint: window.location.origin,
+      prompt: '',
+      text: '<p>Write your story here!</p>'
     }
-    // this.handleTextChange = this.handleTextChange.bind(this)
+    this.uniqueId = Math.floor(Math.random() * 10000000000)
+    //Will need to update this if there are users
+    this.socket = socketIOClient(this.state.endpoint)
+
+    this.socket.on('connect', () => {
+      console.log(
+        'I have made a persistent two-way connection to the server! with React!'
+      )
+      this.socket.emit('join-text', 'prompt')
+    })
+
+    this.socket.on('load', story => {
+      console.log('loading story', story)
+      this.writing(story, false)
+    })
+
+    this.socket.on('type-from-server', data => {
+      console.log('data from update in client', data)
+      this.writing(data, false)
+      // const content = JSON.parse(data)
+      // const {uniqueId, content: ops} = content
+      // if (ops !== null && this.uniqueId !== uniqueId) {
+      //   setTimeout(() => {
+      //     this.ck.applyOperations(ops)
+      //   })
+      // }
+    })
   }
 
-  componentDidMount() {}
+  send = content => {
+    const data = JSON.stringify({content, uniqueId: this.uniqueId})
+    this.socket.emit('update', data)
+  }
 
-  // writing(text, shouldBroadcast = true){
-  //   this.setState({
-  //     story: text
-  //   })
-  //   shouldBroadcast && events.emit('type', text)
-  // }
+  // onChange = change => {
+  //   const ops = change.operations
+  //     .filter(o => o.type !== 'set_selection' && o.type !== 'set_text')
+  //     .toJS()
+  //   if (ops.length > 0) {
+  //     this.send(ops)
+  //   }
+
+  writing(text, shouldBroadcast = true) {
+    this.setState({
+      text
+    })
+    shouldBroadcast && events.emit('type', text)
+  }
+
+  update(editor) {
+    console.log("This is the editor in the update", editor)
+    const data = editor.getData()
+    this.socket.emit('type-from-client', 'prompt', data)
+  }
+
+  // componentDidMount() {
+    //Here the prompt itself should be loaded - both on the page and in the state. It will then be passed in as the 'prompt' field to distinguish rooms
+  //}
 
   // handleTextChange(event) {
   //   event.preventDefault()
-  //   let text = event.target.value
+  //   let text = event.target.text
   //   console.log('text to return', text)
   //   writing(text)
   // }
@@ -59,32 +109,30 @@ class Story extends React.Component {
   render() {
     return (
       <div className="story-container">
-        <textarea
+        {/* <textarea
           id="story"
           rows="10"
           cols="50"
           placeholder="Start your story here..."
           // onChange={() => this.handleTextChange()}
-        />
-        {/* <CKEditor
+        /> */}
+        <CKEditor
           id="story"
           editor={ClassicEditor}
-          data="<p>Write your story here!</p>"
+          data={this.state.text}
           onInit={editor => {
             // You can store the "editor" and use when it is needed.
             console.log('Editor is ready to use!', editor)
           }}
-          onChange={(event, editor) => {
-            const data = editor.getData()
-            console.log({event, editor, data})
-          }}
-          onBlur={editor => {
-            console.log('Blur.', editor)
-          }}
-          onFocus={editor => {
-            console.log('Focus.', editor)
-          }}
-        /> */}
+          onChange={(event, editor) => this.update(editor)}
+          // onBlur={editor => {
+          //   console.log('Blur.', editor)
+          // }}
+          // onFocus={editor => {
+          //   console.log('Focus.', editor)
+          // }}
+        />
+        {/* <StoryComp ref={ckE => this.ck = ckE} onChange={this.onChange}/> */}
       </div>
     )
   }
@@ -96,17 +144,16 @@ class Story extends React.Component {
 //   setupTextField()
 // }
 
-
 // document.addEventListener('DOMContentLoaded', setup)
 
 /**
  * CONTAINER
  */
-const mapState = state => {
-  return {
-    story: ''
-  }
-}
+// const mapState = state => {
+//   return {
+//     story: ''
+//   }
+// }
 
 // const mapDispatch = dispatch => {
 //   return {
@@ -116,4 +163,5 @@ const mapState = state => {
 //   }
 // }
 
-export default connect(mapState)(Story)
+// export default connect(mapState)(Story)
+export default Story
