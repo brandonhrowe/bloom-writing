@@ -58,7 +58,12 @@ router.get('/', async (req, res, next) => {
     const prompts = [
       `Write a story about {{ adjective }} {{ nouns }} that ${adverb} ${verbPastTense ? verbPastTense : verb} {{ nouns }}.`,
       `Write a story about {{ an_adjective }} {{ noun }} and a group of {{ nouns }}.`,
-      `Write a story where the protagonist is {{ an_adjective }} {{ noun }} that wants to ${verb}.`
+      `Write a story where the protagonist is {{ an_adjective }} {{ noun }} that wants to ${verb}.`,
+      `Write a story where the first line is, "It was {{ an_adjective }}, {{ adjective }} night when the {{ nouns }} came..."`,
+      `Write a story about the what it means to ${verb}, as told by {{ a_noun }}.`,
+      `Write a story in the form of a stream-of-conscience, as experienced by {{ a_noun }}.`,
+      `Write a story where, instead of speaking, the characters ${verb}.`,
+      `Write a story consisting of only dialogue between {{ a_noun }} and {{ nouns }}`
     ]
     const prompt = Sentencer.make(randy.choice(prompts))
     res.send(prompt)
@@ -69,7 +74,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/suggestion', async (req, res, next) => {
   try {
-    let text = 'A dog lived with a cat. They had pet.'
+    let text = 'A dog lived with a cat. They had a pet.'
 
     const nouns = nlp(text)
       .nouns()
