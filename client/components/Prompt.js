@@ -18,16 +18,16 @@ const Prompt = ({loadPrompt, prompt, loading}) => (
                   ? `an ${prompt.adjective} ${prompt.nounOne}`
                   : `a ${prompt.adjective} ${prompt.nounOne}`
                 : `${prompt.adjective} ${prompt.nounOne}`
-            } that ${
-              Math.floor(Math.random() * 2) === 1 ? 'could' : 'would'
-            } ${Math.floor(Math.random() * 2) === 1 ? prompt.adverb : ''} ${
-              prompt.verb
-            }${Math.floor(Math.random() * 2) === 1 ?
-              (prompt.nounTwoForm === 'singular'
-                ? ['a', 'e', 'i', 'o', 'u', 'h'].includes(prompt.nounTwo[0])
-                  ? ` an ${prompt.nounTwo}.`
-                  : ` a ${prompt.nounTwo}.`
-                : prompt.nounTwo) : '.'
+            } that ${Math.floor(Math.random() * 2) === 1 ? 'could' : 'would'} ${
+              Math.floor(Math.random() * 2) === 1 ? prompt.adverb : ''
+            } ${prompt.verb}${
+              Math.floor(Math.random() * 2) === 1
+                ? prompt.nounTwoForm === 'singular'
+                  ? ['a', 'e', 'i', 'o', 'u', 'h'].includes(prompt.nounTwo[0])
+                    ? ` an ${prompt.nounTwo}.`
+                    : ` a ${prompt.nounTwo}.`
+                  : prompt.nounTwo
+                : '.'
             }`
           : 'Prompt is currently loading...'
         : 'Click the button to load a prompt!'}

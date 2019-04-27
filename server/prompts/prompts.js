@@ -17,52 +17,38 @@ module.exports = router
 //VI-UUASA-N = verb, indicative ('ran')
 //VI-UUFSA-N = verb, future ('will run')
 
-Sentencer.configure({
-  actions: {
-    verb_past: function(verb){
-      console.log("in verb_past", verb)
-      return nlp(verb)
-        .verbs()
-        .toPastTense()
-        .out()
-    },
-    verb_present: async () => {
-      const verb = await getRandomWord('verb')
-      return nlp(verb)
-        .verbs()
-        .toPresentTense()
-        .out()
-    },
-    verb_future: async () => {
-      const verb = await getRandomWord('verb')
-      return nlp(verb)
-        .verbs()
-        .toFutureTense()
-        .out()
-    },
-    adverb: async () => {
-      const adverb = await getRandomWord('adverb')
-      return adverb
-    }
-  }
-})
 
 router.get('/', async (req, res, next) => {
   try {
-    await unirest
+    let verb = await unirest
       .get(
         `https://wordsapiv1.p.rapidapi.com/words/?random=true&partOfSpeech=verb&letterPattern=^[A-Za-z]*$`
       )
       .header('X-RapidAPI-Host', 'wordsapiv1.p.rapidapi.com')
       .header('X-RapidAPI-Key', process.env.WORDS_API_KEY)
-      .end(result => {
-        const verb = result.body.word
-        console.log(verb)
-        const prompt = Sentencer.make(
-          `Write a story about {{ an_adjective }} {{ noun }} and several {{ nouns }} {{ verb_past(${verb}) }}.`
-        )
-        res.send(prompt)
-      })
+    if (
+      nlp(verb.body.word)
+        .verbs()
+        .data().length
+    ) {
+      verb = nlp(verb.body.word)
+        .verbs()
+        .toPresentTense()
+        .out()
+    } else {
+      verb = verb.body.word
+    }
+    let adverb = await unirest
+      .get(
+        `https://wordsapiv1.p.rapidapi.com/words/?random=true&partOfSpeech=adverb&letterPattern=^[A-Za-z]*$`
+      )
+      .header('X-RapidAPI-Host', 'wordsapiv1.p.rapidapi.com')
+      .header('X-RapidAPI-Key', process.env.WORDS_API_KEY)
+    adverb = adverb.body.word
+    const prompt = Sentencer.make(
+      `Write a story about {{ adjective }} {{ nouns }} that ${adverb} ${verb} {{ nouns }}.`
+    )
+    res.send(prompt)
   } catch (error) {
     next(error)
   }
@@ -70,8 +56,8 @@ router.get('/', async (req, res, next) => {
 
 router.get('/suggestion', async (req, res, next) => {
   try {
-    let text =
-      'Today, a dog lived with a cat, and they were named Milo and Otis. They did many things together, such as swimming and fishing. They had pet fish.'
+    let text = 'A dog lived with a cat. They had pet.'
+
     const nouns = nlp(text)
       .nouns()
       .data()
@@ -81,26 +67,59 @@ router.get('/suggestion', async (req, res, next) => {
       .hasPlural()
     const commonNouns = nouns.filter((noun, i) => commonNounsIndex[i])
     const properNouns = nouns.filter((noun, i) => !commonNounsIndex[i])
+    const verbs = nlp(text)
+      .verbs()
+      .data()
+      .map(verbObj => verbObj.conjugations.Infinitive)
     Sentencer.configure({
-      nounList: [...nouns],
-      actions: {
-        common_noun: () => {
-          return randy.choice(commonNouns)
-        },
-        proper_noun: () => {
-          return randy.choice(properNouns)
-        }
-      }
+      // nounList: [...nouns],
+      // actions: {
+      //   common_noun: () => {
+      //     return randy.choice(commonNouns)
+      //   },
+      //   proper_noun: () => {
+      //     return randy.choice(properNouns)
+      //   },
+      //   verb: () => {
+      //     return randy.choice(verbs)
+      //   }
+      // }
     })
     const tense = nlp(text)
       .verbs()
       .conjugation()[0]
     let suggestion
+    const sentenceStarts = [
+      'After that, ',
+      'However, ',
+      'And then, ',
+      'Luckily, ',
+      'Fortunately, ',
+      'Unfortunately, ',
+      'To the dismay of everyone, ',
+      'But if one to recall, '
+    ]
+    const suggestions = [
+      `${
+        properNouns.length ? randy.choice(properNouns) : 'the {{ noun }}'
+      } proceeded to ${randy.choice(verbs)}.`,
+      `the {{ noun }} was {{ adjective }}, waiting for ${
+        commonNouns.length ? randy.choice(commonNouns) : '{{ nouns }}'
+      }.`,
+      `there were even more ${
+        commonNouns.length ? randy.choice(commonNouns) : '{{ nouns }}'
+      } on the way.`,
+      `there was {{ an_adjective }} ${
+        commonNouns.length ? randy.choice(commonNouns) : '{{ nouns }}'
+      }`
+    ]
+
     //also need better template suggestion sentences with more variety. look more at metaphorpsum
     if (tense === 'Past') {
       suggestion = nlp(
         Sentencer.make(
-          'After that, {{ proper_noun }} proceeded to do other things...'
+          `${randy.choice(sentenceStarts)}
+          ${randy.choice(suggestions)}`
         )
       )
         .sentences()
@@ -109,7 +128,8 @@ router.get('/suggestion', async (req, res, next) => {
     } else if (tense === 'Present') {
       suggestion = nlp(
         Sentencer.make(
-          'After that, the {{ noun }} proceeded to do other things...'
+          `${randy.choice(sentenceStarts)}
+          ${randy.choice(suggestions)}`
         )
       )
         .sentences()
@@ -118,7 +138,8 @@ router.get('/suggestion', async (req, res, next) => {
     } else if (tense === 'Future') {
       suggestion = nlp(
         Sentencer.make(
-          'After that, the {{ noun }} proceeded to do other things...'
+          `${randy.choice(sentenceStarts)}
+          ${randy.choice(suggestions)}`
         )
       )
         .sentences()

@@ -1,18 +1,17 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {Sentence} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
+  const sentences = await Promise.all([
+    Sentence.create({text: 'After that, {{ proper_noun }} proceeded to {{ verb }}.'}),
   ])
 
-  console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${sentences.length} Sentences`)
   console.log(`seeded successfully`)
 }
 
