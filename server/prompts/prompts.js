@@ -17,7 +17,6 @@ module.exports = router
 //VI-UUASA-N = verb, indicative ('ran')
 //VI-UUFSA-N = verb, future ('will run')
 
-
 router.get('/', async (req, res, next) => {
   try {
     let verb = await unirest
@@ -26,18 +25,29 @@ router.get('/', async (req, res, next) => {
       )
       .header('X-RapidAPI-Host', 'wordsapiv1.p.rapidapi.com')
       .header('X-RapidAPI-Key', process.env.WORDS_API_KEY)
+    verb = verb.body.word
+    let verbPresentTense
+    let verbPastTense
+    let verbFutureTense
     if (
-      nlp(verb.body.word)
+      nlp(verb)
         .verbs()
         .data().length
     ) {
-      verb = nlp(verb.body.word)
+      verbPresentTense = nlp(verb)
         .verbs()
         .toPresentTense()
         .out()
-    } else {
-      verb = verb.body.word
+      verbPastTense = nlp(verb)
+        .verbs()
+        .toPastTense()
+        .out()
+      verbFutureTense = nlp(verb)
+        .verbs()
+        .toFutureTense()
+        .out()
     }
+
     let adverb = await unirest
       .get(
         `https://wordsapiv1.p.rapidapi.com/words/?random=true&partOfSpeech=adverb&letterPattern=^[A-Za-z]*$`
@@ -45,9 +55,12 @@ router.get('/', async (req, res, next) => {
       .header('X-RapidAPI-Host', 'wordsapiv1.p.rapidapi.com')
       .header('X-RapidAPI-Key', process.env.WORDS_API_KEY)
     adverb = adverb.body.word
-    const prompt = Sentencer.make(
-      `Write a story about {{ adjective }} {{ nouns }} that ${adverb} ${verb} {{ nouns }}.`
-    )
+    const prompts = [
+      `Write a story about {{ adjective }} {{ nouns }} that ${adverb} ${verbPastTense ? verbPastTense : verb} {{ nouns }}.`,
+      `Write a story about {{ an_adjective }} {{ noun }} and a group of {{ nouns }}.`,
+      `Write a story where the protagonist is {{ an_adjective }} {{ noun }} that wants to ${verb}.`
+    ]
+    const prompt = Sentencer.make(randy.choice(prompts))
     res.send(prompt)
   } catch (error) {
     next(error)
