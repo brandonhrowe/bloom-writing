@@ -63,7 +63,7 @@ router.get('/', async (req, res, next) => {
       `Write a story about the what it means to ${verb}, as told by {{ a_noun }}.`,
       `Write a story in the form of a stream-of-conscience, as experienced by {{ a_noun }}.`,
       `Write a story where, instead of speaking, the characters ${verb}.`,
-      `Write a story consisting of only dialogue between {{ a_noun }} and {{ nouns }}`
+      `Write a story consisting of only dialogue between {{ a_noun }} and {{ nouns }}.`
     ]
     const prompt = Sentencer.make(randy.choice(prompts))
     res.send(prompt)

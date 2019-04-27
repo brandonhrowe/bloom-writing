@@ -8,6 +8,7 @@ import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import socketIOClient from 'socket.io-client'
 import {EventEmitter} from 'events'
+import axios from 'axios'
 // const socket = io(window.location.origin)
 const events = new EventEmitter()
 // import StoryComp from './StoryComp'
@@ -17,28 +18,35 @@ class Story extends Component {
     super(props)
     this.state = {
       endpoint: window.location.origin,
-      prompt: '',
+      prompt: 'A prompt is loading. Please wait...',
       text: '<p>Write your story here!</p>'
     }
     this.uniqueId = Math.floor(Math.random() * 10000000000)
     //Will need to update this if there are users
     this.socket = socketIOClient(this.state.endpoint)
 
-    this.socket.on('connect', () => {
+    this.socket.on('connect', async () => {
       console.log(
-        'I have made a persistent two-way connection to the server! with React!'
+        `I have made a persistent two-way connection to the server! with React! This is my uniqueId: ${
+          this.uniqueId
+        }`
       )
-      this.socket.emit('join-text', 'prompt')
+      //Will have to modify this for sockets so that it doesn't automatically generate a new prompt and thusly a new room
+      // const {data} = await axios.get('/prompts')
+      // this.setState({
+      //   prompt: data
+      // })
+      this.socket.emit('join-text', this.state.prompt, this.uniqueId)
     })
 
-    this.socket.on('load', story => {
+    this.socket.on('load', (story, uniqueId) => {
       console.log('loading story', story)
-      this.writing(story, false)
+      this.writing(story, uniqueId, false)
     })
 
-    this.socket.on('type-from-server', (data, event) => {
+    this.socket.on('type-from-server', (data, uniqueId, event) => {
       console.log('data and event from update in client', data, event)
-      this.writing(data, false, event)
+      this.writing(data, uniqueId, false, event)
       // const content = JSON.parse(data)
       // const {uniqueId, content: ops} = content
       // if (ops !== null && this.uniqueId !== uniqueId) {
@@ -46,6 +54,11 @@ class Story extends Component {
       //     this.ck.applyOperations(ops)
       //   })
       // }
+    })
+
+    events.on('change:data', text => {
+      console.log('this.events.on change:data called. text:', text)
+      this.socket.emit('type-from-client', this.state.prompt, text)
     })
     // this.send = this.send.bind(this)
     this.writing = this.writing.bind(this)
@@ -65,26 +78,42 @@ class Story extends Component {
   //     this.send(ops)
   //   }
 
-  writing(text, shouldBroadcast = true, event) {
-    const currData = this.state.text
-    console.log("in the writing function. event passed in: ", event)
-    console.log("in the writing function. current state.text: ", event)
+  writing(text, uniqueId, shouldBroadcast = true, event) {
+    console.log('this.uniqueId within writing', this.uniqueId)
+    console.log('uniqueId within writing', uniqueId)
+    // if (this.uniqueId !== uniqueId) {
     this.setState({
       text
     })
-    shouldBroadcast && events.emit('type', text)
+    // }
+    events.emit('type', text)
+    // if (shouldBroadcast) {
+    //   console.log('shouldBroadcast is true, events.emitting type')
+    //   events.emit('type', text)
+    // }
   }
 
   update(event, editor) {
+    // event.preventDefault()
     console.log(event, editor)
     const data = editor.getData()
-    console.log("data to be sent out from update function", data)
-    this.socket.emit('type-from-client', 'prompt', data, event)
+    console.log('data to be sent out from update function', data)
+    this.socket.emit(
+      'type-from-client',
+      this.state.prompt,
+      data,
+      this.uniqueId,
+      event
+    )
   }
 
-  // componentDidMount() {
-  //Here the prompt itself should be loaded - both on the page and in the state. It will then be passed in as the 'prompt' field to distinguish rooms
-  //}
+  async componentDidMount() {
+    // Here the prompt itself should be loaded - both on the page and in the state. It will then be passed in as the 'prompt' field to distinguish rooms
+    // const {data} = await axios.get('/prompts')
+    // this.setState({
+    //   prompt: data
+    // })
+  }
 
   // handleTextChange(event) {
   //   event.preventDefault()
@@ -123,6 +152,7 @@ class Story extends Component {
           placeholder="Start your story here..."
           // onChange={() => this.handleTextChange()}
         /> */}
+        <h1>{this.state.prompt}</h1>
         <CKEditor
           id="story"
           editor={ClassicEditor}
@@ -131,7 +161,9 @@ class Story extends Component {
             // You can store the "editor" and use when it is needed.
             console.log('Editor is ready to use!', editor)
           }}
-          onChange={(event, editor) => this.update(event, editor)}
+          onChange={(event, editor) => {
+            this.update(event, editor)
+          }}
         />
         {/* <StoryComp ref={ckE => this.ck = ckE} onChange={this.onChange}/> */}
       </div>
