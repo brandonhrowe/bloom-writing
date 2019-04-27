@@ -36,9 +36,9 @@ class Story extends Component {
       this.writing(story, false)
     })
 
-    this.socket.on('type-from-server', data => {
-      console.log('data from update in client', data)
-      this.writing(data, false)
+    this.socket.on('type-from-server', (data, event) => {
+      console.log('data and event from update in client', data, event)
+      this.writing(data, false, event)
       // const content = JSON.parse(data)
       // const {uniqueId, content: ops} = content
       // if (ops !== null && this.uniqueId !== uniqueId) {
@@ -47,12 +47,15 @@ class Story extends Component {
       //   })
       // }
     })
+    // this.send = this.send.bind(this)
+    this.writing = this.writing.bind(this)
+    this.update = this.update.bind(this)
   }
 
-  send = content => {
-    const data = JSON.stringify({content, uniqueId: this.uniqueId})
-    this.socket.emit('update', data)
-  }
+  // send = content => {
+  //   const data = JSON.stringify({content, uniqueId: this.uniqueId})
+  //   this.socket.emit('update', data)
+  // }
 
   // onChange = change => {
   //   const ops = change.operations
@@ -62,21 +65,25 @@ class Story extends Component {
   //     this.send(ops)
   //   }
 
-  writing(text, shouldBroadcast = true) {
+  writing(text, shouldBroadcast = true, event) {
+    const currData = this.state.text
+    console.log("in the writing function. event passed in: ", event)
+    console.log("in the writing function. current state.text: ", event)
     this.setState({
       text
     })
     shouldBroadcast && events.emit('type', text)
   }
 
-  update(editor) {
-    console.log("This is the editor in the update", editor)
+  update(event, editor) {
+    console.log(event, editor)
     const data = editor.getData()
-    this.socket.emit('type-from-client', 'prompt', data)
+    console.log("data to be sent out from update function", data)
+    this.socket.emit('type-from-client', 'prompt', data, event)
   }
 
   // componentDidMount() {
-    //Here the prompt itself should be loaded - both on the page and in the state. It will then be passed in as the 'prompt' field to distinguish rooms
+  //Here the prompt itself should be loaded - both on the page and in the state. It will then be passed in as the 'prompt' field to distinguish rooms
   //}
 
   // handleTextChange(event) {
@@ -124,13 +131,7 @@ class Story extends Component {
             // You can store the "editor" and use when it is needed.
             console.log('Editor is ready to use!', editor)
           }}
-          onChange={(event, editor) => this.update(editor)}
-          // onBlur={editor => {
-          //   console.log('Blur.', editor)
-          // }}
-          // onFocus={editor => {
-          //   console.log('Focus.', editor)
-          // }}
+          onChange={(event, editor) => this.update(event, editor)}
         />
         {/* <StoryComp ref={ckE => this.ck = ckE} onChange={this.onChange}/> */}
       </div>
