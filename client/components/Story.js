@@ -20,6 +20,7 @@ class Story extends Component {
       endpoint: window.location.origin,
       prompt: 'A prompt is loading. Please wait...',
       text: '<p>Write your story here!</p>'
+      //text should be the text pulled from the backend; the default for a new story should be "Write your story here"
     }
     this.uniqueId = Math.floor(Math.random() * 10000000000)
     //Will need to update this if there are users
@@ -109,10 +110,10 @@ class Story extends Component {
 
   async componentDidMount() {
     // Here the prompt itself should be loaded - both on the page and in the state. It will then be passed in as the 'prompt' field to distinguish rooms
-    // const {data} = await axios.get('/prompts')
-    // this.setState({
-    //   prompt: data
-    // })
+    const {data} = await axios.get('/prompts')
+    this.setState({
+      prompt: data
+    })
   }
 
   // handleTextChange(event) {
