@@ -140,8 +140,9 @@ class Story extends Component {
 
   handleSave(event, editor) {
     const {id} = this.props.story
+    console.log("this.props on save", this.props)
     const oldText = editor.getData()
-    console.log("storyid:", id)
+    console.log("storyid in frontend:", id)
     setTimeout(async () => {
       let newText = editor.getData()
       console.log("newText:", newText)
@@ -159,7 +160,8 @@ class Story extends Component {
     // this.setState({
     //   prompt: data
     // })
-    if (!this.props.match.params.storyId) {
+    console.log(this.props)
+    if (this.props.match.url === "/story/new") {
       await this.props.loadNewStory()
       console.log('this.props within component mounting', this.props)
       // this.props.location.pathname = `/story/${this.props.story.id}`

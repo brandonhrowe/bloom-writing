@@ -41,7 +41,7 @@ class UserHome extends Component {
             type="button"
             onClick={() => {
               // await createNewStory()
-              history.push(`/story`)
+              history.push(`/story/new`)
             }}
           >
             <h1>Start a New Story</h1>

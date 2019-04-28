@@ -99,7 +99,7 @@ router.get('/create', async (req, res, next) => {
         prompt,
         userId
       })
-      console.log(story)
+      console.log("story created", story)
       res.json(story)
     } else {
       res.status(400).send('Sorry, only the user can access this.')
