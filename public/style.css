@@ -5,6 +5,8 @@ body {
   height: 100vh;
   margin: 0em;
   padding: 0em; }
+  body button {
+    font-family: 'Josefin Sans', sans-serif; }
   body a {
     text-decoration: none; }
   body label {
@@ -54,12 +56,16 @@ body {
         width: 20vw; }
   body .stories-list-container {
     padding-left: 5vw;
-    padding-bottom: 2em; }
+    padding-bottom: 2em;
+    display: flex; }
+    body .stories-list-container h1 {
+      padding-top: 1.5em;
+      font-size: 3em; }
     body .stories-list-container li {
       padding: 1em;
-      font-size: 2em;
+      font-size: 1.5em;
       margin-left: 1vw;
-      margin-right: 1vw; }
+      margin-right: 20vw; }
     body .stories-list-container li:hover {
       color: #df5c05; }
   body nav {
@@ -72,7 +78,8 @@ body {
       body nav div h1 {
         margin: 0em; }
     body nav a {
-      display: inline-block; }
+      display: inline-block;
+      font-size: 1.5em; }
   body form {
     display: flex;
     flex-direction: column;

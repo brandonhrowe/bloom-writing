@@ -14,6 +14,10 @@ body {
   margin: 0em;
   padding: 0em;
 
+  button {
+    font-family: 'Josefin Sans', sans-serif;
+  }
+
   a {
     text-decoration: none;
   }
@@ -83,11 +87,16 @@ body {
   .stories-list-container {
     padding-left: 5vw;
     padding-bottom: 2em;
+    display: flex;
+    h1 {
+      padding-top: 1.5em;
+      font-size: 3em;
+    }
     li {
       padding: 1em;
-      font-size: 2em;
+      font-size: 1.5em;
       margin-left: 1vw;
-      margin-right: 1vw;
+      margin-right: 20vw;
     }
     li:hover {
       color: #df5c05;
@@ -109,6 +118,7 @@ body {
     }
     a {
       display: inline-block;
+      font-size: 1.5em;
     }
   }
 
