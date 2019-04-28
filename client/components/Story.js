@@ -141,11 +141,13 @@ class Story extends Component {
     // this.setState({
     //   prompt: data
     // })
-    if (!this.props.story.id){
-      this.props.loadNewStory()
+    if (!this.props.match.params.storyId){
+      await this.props.loadNewStory()
+      console.log("this.props within component mounting", this.props)
+      // this.props.location.pathname = `/story/${this.props.story.id}`
     }
     else {
-      this.props.loadExistingStory()
+      this.props.loadExistingStory(this.props.match.params.storyId)
     }
   }
 
@@ -236,17 +238,17 @@ class Story extends Component {
  */
 const mapState = state => {
   return {
-    story: state.story
+    story: state.story,
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    loadNewStory() {
-      dispatch(createStoryThunk())
+    async loadNewStory() {
+      await dispatch(createStoryThunk())
     },
-    loadExistingStory(id){
-      dispatch(getStoryThunk(id))
+    async loadExistingStory(id){
+      await dispatch(getStoryThunk(id))
     }
   }
 }

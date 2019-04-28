@@ -24,7 +24,7 @@ const getStory = story => ({type: GET_STORY, story})
  export const getStoryThunk = id => {
   return async dispatch => {
     try {
-      const {data} = await axios.get(`/api/stories/${id}`)
+      const {data} = await axios.get(`/api/stories/story/${id}`)
       dispatch(getStory(data))
     } catch (error) {
       console.log(error)
@@ -46,7 +46,7 @@ const getStory = story => ({type: GET_STORY, story})
  export const editStoryThunk = (id, text) => {
   return async dispatch => {
     try {
-      const {data} = await axios.put(`/api/stories${id}`, text)
+      const {data} = await axios.put(`/api/stories/story/${id}`, text)
       dispatch(getStory(data))
     } catch (error) {
       console.log(error)
