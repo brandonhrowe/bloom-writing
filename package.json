@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "Bloom Writing is a program to help spark ideas for writing. A prompt will be generated, using several blueprint sentences and randomly-generated words with which to fill it.",
   "engines": {
-    "node": ">= 7.0.0"
+    "node": "v10.15.0"
   },
   "main": "index.js",
   "scripts": {
