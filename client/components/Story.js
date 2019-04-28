@@ -133,8 +133,7 @@ class Story extends Component {
             suggestion: data,
             suggestionVisibility: 1
           })
-        }
-        else if (oldLength !== newLength) {
+        } else if (oldLength !== newLength) {
           this.setState({
             suggestionVisibility: 0
           })
@@ -176,32 +175,36 @@ class Story extends Component {
   }
 
   async handleHighlight(event) {
-    const text = await window.getSelection().toString().toLowerCase()
-    console.log("text", text)
-    const {data} = await axios.get(`/api/stories/def/${text}`)
-    console.log("{data}", data)
-    if (data.statusCode === 404) {
-      this.setState({
-        definitions: {},
-        definitionVisibility: 1,
-        definitionsError: true
-      })
-      setTimeout(() => {
+    const text = await window
+      .getSelection()
+      .toString()
+      .toLowerCase()
+    console.log('text', text)
+    if (text.length) {
+      const {data} = await axios.get(`/api/stories/def/${text}`)
+      if (data.statusCode === 404) {
         this.setState({
-          definitionVisibility: 0
+          definitions: {},
+          definitionVisibility: 1,
+          definitionsError: true
         })
-      }, 5000)
-    } else {
-      this.setState({
-        definitionVisibility: 1,
-        definitionsError: false,
-        definitions: data.body
-      })
-      setTimeout(() => {
+        setTimeout(() => {
+          this.setState({
+            definitionVisibility: 0
+          })
+        }, 5000)
+      } else {
         this.setState({
-          definitionVisibility: 0,
+          definitionVisibility: 1,
+          definitionsError: false,
+          definitions: data.body
         })
-      }, 10000)
+        setTimeout(() => {
+          this.setState({
+            definitionVisibility: 0
+          })
+        }, 20000)
+      }
     }
   }
 
@@ -310,7 +313,7 @@ class Story extends Component {
               </div>
             ) : (
               <div>
-                <h2>Definitions for {this.state.definitions.word}:</h2>
+                <h2>Definitions for "{this.state.definitions.word}":</h2>
                 <div>
                   {this.state.definitions.definitions.map(def => {
                     return (
