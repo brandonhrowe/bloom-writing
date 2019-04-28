@@ -23,7 +23,10 @@ class Story extends Component {
       length: 4,
       suggestion: '',
       suggestionVisibility: 0,
-      saveVisibility: 0
+      saveVisibility: 0,
+      highlightedText: '',
+      definitionVisibility: 0,
+      definitions: {}
       //text should be the text pulled from the backend; the default for a new story should be "Write your story here"
     }
     this.uniqueId = Math.floor(Math.random() * 10000000000)
@@ -141,15 +144,19 @@ class Story extends Component {
 
   handleSave(event, editor) {
     const {id} = this.props.story
-    console.log("this.props on save", this.props)
+    console.log('this.props on save', this.props)
     const oldText = editor.getData()
-    console.log("storyid in frontend:", id)
+    console.log('storyid in frontend:', id)
     setTimeout(async () => {
       let newText = editor.getData()
-      console.log("newText:", newText)
-      if (oldText === newText){
+      console.log('newText:', newText)
+      if (oldText === newText) {
         // this.props.saveStory(id, newText)
-        const {data} = await axios.put(`/api/stories/story`, {"storyId": id, "text": oldText, "length": this.state.length})
+        const {data} = await axios.put(`/api/stories/story`, {
+          storyId: id,
+          text: oldText,
+          length: this.state.length
+        })
         this.setState({
           saveVisibility: 1
         })
@@ -162,6 +169,16 @@ class Story extends Component {
     }, 6000)
   }
 
+  async handleHighlight(event) {
+    const text = window.getSelection.toString().toLowerCase()
+    const definitions = await axios.get(`/api/stories/def/${text}`)
+    this.setState({
+      highlightedText: window.getSelection.toString(),
+      definitionVisibility: 1,
+      definitions
+    })
+  }
+
   async componentDidMount() {
     // Here the prompt itself should be loaded - both on the page and in the state. It will then be passed in as the 'prompt' field to distinguish rooms
     // const {data} = await axios.get('/prompts')
@@ -169,7 +186,7 @@ class Story extends Component {
     //   prompt: data
     // })
     console.log(this.props)
-    if (this.props.match.url === "/story/new") {
+    if (this.props.match.url === '/story/new') {
       await this.props.loadNewStory()
       console.log('this.props within component mounting', this.props)
       // this.props.location.pathname = `/story/${this.props.story.id}`
@@ -222,7 +239,7 @@ class Story extends Component {
           placeholder="Start your story here..."
           // onChange={() => this.handleTextChange()}
         /> */}
-        <h1 className="prompt">
+        <h1 className="prompt" onMouseUp={this.handleHighlight}>
           <u>
             {story.prompt
               ? story.prompt
@@ -231,7 +248,9 @@ class Story extends Component {
         </h1>
         <div className="wordcount-save">
           <h4>Word Count: {this.state.length}</h4>
-          <div className="save" style={{opacity: this.state.saveVisibility}}>Story has been saved</div>
+          <div className="save" style={{opacity: this.state.saveVisibility}}>
+            Story has been saved
+          </div>
         </div>
         <CKEditor
           id="story"
@@ -247,12 +266,21 @@ class Story extends Component {
           }}
         />
         <br />
-        <div
-          className="suggestion"
-          style={{opacity: this.state.suggestionVisibility}}
-        >
-          In Search of Lost <strike>Time</strike> Words? Maybe Something Like
-          This Could Go Next...<br /> <h3>"{this.state.suggestion}"</h3>
+        <div className="story-bottom-container">
+          <div
+            className="suggestion"
+            style={{opacity: this.state.suggestionVisibility}}
+          >
+            In Search of Lost <strike>Time</strike> Words? Maybe Something Like
+            This Could Go Next...<br /> <h3>"{this.state.suggestion}"</h3>
+          </div>
+          <div
+            className="definitions"
+            style={{opacity: this.state.suggestionVisibility}}
+          >
+            In Search of Lost <strike>Time</strike> Words? Maybe Something Like
+            This Could Go Next...<br /> <h3>"{this.state.suggestion}"</h3>
+          </div>
         </div>
         {/* <StoryComp ref={ckE => this.ck = ckE} onChange={this.onChange}/> */}
       </div>

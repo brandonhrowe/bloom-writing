@@ -17,7 +17,7 @@ class UserHome extends Component {
     return (
       <div className="user-home">
         <div className="welcome">
-          <h1>Welcome, {username}, to Bloom!</h1>
+          <h1>Welcome, {username}, to BLOOM WRITING!</h1>
           <h2>Select one of the modes from above to get started.</h2>
           <ul>
             <li>

@@ -37,7 +37,7 @@ const AuthForm = props => {
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
-      <h1>Hello, and welcome to Bloom Writing! This is a place that provides users with a place to write, generating random prompts with which to start. Log In or Sign Up to start!</h1>
+      <h1>Hello, and welcome to BLOOM WRITING! This is a place that provides users with a place to write, generating random prompts with which to start. Log In or Sign Up to start!</h1>
     </div>
   )
 }
