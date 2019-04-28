@@ -20,10 +20,10 @@ router.get('/story/:storyId', async (req, res, next) => {
   }
 })
 
-router.get('/all/:userId', async (req, res, next) => {
+router.get('/all', async (req, res, next) => {
   try {
     if (req.user) {
-      const userId = Number(req.params.userId)
+      const userId = Number(req.user.dataValues.id)
       const stories = await Story.findAll({
         where: {
           userId

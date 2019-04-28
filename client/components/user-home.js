@@ -46,7 +46,9 @@ class UserHome extends Component {
           >
             <h1>Start a New Story</h1>
           </button>
-          <button className="button-metamorphosis" type="button">
+          <button className="button-metamorphosis" type="button" onClick={() => {
+            history.push('/yourstories')
+          }}>
             <h1>See a List of Your Stories</h1>
           </button>
         </div>
