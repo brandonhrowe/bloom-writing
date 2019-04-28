@@ -19,7 +19,6 @@ const setupTextField = () => {
     //need to modify this so that it handles any modification to text
     event.preventDefault()
     let letter = event.key
-    console.log("text to return", letter)
     writing(letter)
   })
 }
@@ -35,17 +34,14 @@ socket.on('connect', () => {
 })
 
 socket.on('load', story => {
-  console.log('loading story', story)
   writing(story, false)
 })
 
 socket.on('type-from-server', text => {
-  console.log("in type-from-server. Text:", text)
   writing(text, false)
 })
 
 events.on('type', text => {
-  console.log('events.on type called. Text:', text)
   socket.emit('type-from-client', 'prompt', text)
 })
 

@@ -11,6 +11,8 @@ body {
     margin: 1em;
     display: inline-block; }
   body .suggestion {
-    position: absolute; }
+    position: absolute;
+    opacity: 0;
+    transition: 0.5s all; }
 
 /*# sourceMappingURL=style.css.map*/

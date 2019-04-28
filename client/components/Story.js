@@ -21,7 +21,8 @@ class Story extends Component {
       prompt: 'A prompt is loading. Please wait...',
       text: '<p>Write your story here!</p>',
       suggestion: '',
-      length: 4
+      length: 4,
+      suggestionVisibility: 0
       //text should be the text pulled from the backend; the default for a new story should be "Write your story here"
     }
     this.uniqueId = Math.floor(Math.random() * 10000000000)
@@ -123,7 +124,13 @@ class Story extends Component {
         newLength = newData.split(' ').length
         if (oldLength === newLength) {
           this.setState({
-            suggestion: data
+            suggestion: data,
+            suggestionVisibility: 1
+          })
+        }
+        if (oldLength !== newLength) {
+          this.setState({
+            suggestionVisibility: 0
           })
         }
       }, 5000)
@@ -198,7 +205,10 @@ class Story extends Component {
           }}
         />
         <br />
-        <div>
+        <div
+          className="suggestion"
+          style={{opacity: this.state.suggestionVisibility}}
+        >
           In Search of Lost <strike>Time</strike> Words? Maybe Something Like
           This Could Help...<br /> <h4>"{this.state.suggestion}"</h4>
         </div>
