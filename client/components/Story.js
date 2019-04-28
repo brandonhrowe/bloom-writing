@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-// import {setStory} from '../store'
+import {createStoryThunk, getStoryThunk} from '../store'
 // import socket from '../socket'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
@@ -18,10 +18,10 @@ class Story extends Component {
     super(props)
     this.state = {
       endpoint: window.location.origin,
-      prompt: 'Waiting for Godot. Or a prompt. Whichever comes first...',
-      text: '<p>Write your story here!</p>',
-      suggestion: '',
+      // prompt: 'Waiting for Godot. Or a prompt. Whichever comes first...',
+      // text: '<p>Write your story here!</p>',
       length: 4,
+      suggestion: '',
       suggestionVisibility: 0
       //text should be the text pulled from the backend; the default for a new story should be "Write your story here"
     }
@@ -137,17 +137,23 @@ class Story extends Component {
 
   async componentDidMount() {
     // Here the prompt itself should be loaded - both on the page and in the state. It will then be passed in as the 'prompt' field to distinguish rooms
-    const {data} = await axios.get('/prompts')
-    this.setState({
-      prompt: data
-    })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state !== nextState) {
-      return true
+    // const {data} = await axios.get('/prompts')
+    // this.setState({
+    //   prompt: data
+    // })
+    if (!this.props.story.id){
+      this.props.loadNewStory()
+    }
+    else {
+      this.props.loadExistingStory()
     }
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (this.state !== nextState) {
+  //     return true
+  //   }
+  // }
 
   // handleTextChange(event) {
   //   event.preventDefault()
@@ -177,6 +183,7 @@ class Story extends Component {
   // })
 
   render() {
+    const {story} = this.props
     return (
       <div className="story-container">
         {/* <textarea
@@ -187,13 +194,13 @@ class Story extends Component {
           // onChange={() => this.handleTextChange()}
         /> */}
         <h1 className="prompt">
-          <u>{this.state.prompt}</u>
+          <u>{story.prompt ? story.prompt : 'Waiting for Godot. Or a prompt. Whichever comes first...'}</u>
         </h1>
         <h4>Word Count: {this.state.length}</h4>
         <CKEditor
           id="story"
           editor={ClassicEditor}
-          data={this.state.text}
+          data={story.text ? story.text : '<p>Start your story here!</p>'}
           onInit={editor => {
             console.log('Editor is ready to use!', editor)
           }}
@@ -227,19 +234,22 @@ class Story extends Component {
 /**
  * CONTAINER
  */
-// const mapState = state => {
-//   return {
-//     story: ''
-//   }
-// }
+const mapState = state => {
+  return {
+    story: state.story
+  }
+}
 
-// const mapDispatch = dispatch => {
-//   return {
-//     loadPrompt() {
-//       dispatch(setPrompt())
-//     }
-//   }
-// }
+const mapDispatch = dispatch => {
+  return {
+    loadNewStory() {
+      dispatch(createStoryThunk())
+    },
+    loadExistingStory(id){
+      dispatch(getStoryThunk(id))
+    }
+  }
+}
 
-// export default connect(mapState)(Story)
-export default Story
+export default connect(mapState, mapDispatch)(Story)
+// export default Story

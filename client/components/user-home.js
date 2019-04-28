@@ -39,8 +39,8 @@ class UserHome extends Component {
           <button
             className="button-room-of-own"
             type="button"
-            onClick={async () => {
-              await createNewStory()
+            onClick={() => {
+              // await createNewStory()
               history.push(`/story`)
             }}
           >
