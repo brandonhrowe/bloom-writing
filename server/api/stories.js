@@ -38,9 +38,26 @@ router.get('/all', async (req, res, next) => {
   }
 })
 
+router.get('/def/:text', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const {text} = req.params
+      const def = await unirest
+        .get(`https://wordsapiv1.p.rapidapi.com/words/${text}/definitions`)
+        .header('X-RapidAPI-Host', 'wordsapiv1.p.rapidapi.com')
+        .header('X-RapidAPI-Key', process.env.WORDS_API_KEY)
+      res.json(def)
+    } else {
+      res.status(400).send('Sorry, only the user can access this.')
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/create', async (req, res, next) => {
   try {
-    console.log("IN API CALL ", req.user)
+    console.log('IN API CALL ', req.user)
     if (req.user) {
       const userId = Number(req.user.dataValues.id)
       let verb = await unirest
@@ -99,7 +116,7 @@ router.get('/create', async (req, res, next) => {
         prompt,
         userId
       })
-      console.log("story created", story)
+      console.log('story created', story)
       res.json(story)
     } else {
       res.status(400).send('Sorry, only the user can access this.')
@@ -114,7 +131,7 @@ router.put('/story', async (req, res, next) => {
     if (req.user) {
       const userId = req.user.dataValues.id
       const {storyId, text, length} = req.body
-      console.log("in update story route. storyId passed in: ", storyId, text)
+      console.log('in update story route. storyId passed in: ', storyId, text)
       const story = await Story.update(
         {
           text,

@@ -24,9 +24,9 @@ class Story extends Component {
       suggestion: '',
       suggestionVisibility: 0,
       saveVisibility: 0,
-      highlightedText: '',
       definitionVisibility: 0,
-      definitions: {}
+      definitions: {},
+      definitionsError: true
       //text should be the text pulled from the backend; the default for a new story should be "Write your story here"
     }
     this.uniqueId = Math.floor(Math.random() * 10000000000)
@@ -72,6 +72,7 @@ class Story extends Component {
     this.writing = this.writing.bind(this)
     this.update = this.update.bind(this)
     this.suggestion = this.suggestion.bind(this)
+    this.handleHighlight = this.handleHighlight.bind(this)
   }
 
   // send = content => {
@@ -170,13 +171,34 @@ class Story extends Component {
   }
 
   async handleHighlight(event) {
-    const text = window.getSelection.toString().toLowerCase()
-    const definitions = await axios.get(`/api/stories/def/${text}`)
-    this.setState({
-      highlightedText: window.getSelection.toString(),
-      definitionVisibility: 1,
-      definitions
-    })
+    const text = await window.getSelection().toString().toLowerCase()
+    console.log("text", text)
+    const {data} = await axios.get(`/api/stories/def/${text}`)
+    console.log("{data}", data)
+    if (data.statusCode === 404) {
+      this.setState({
+        definitions: {},
+        definitionVisibility: 1,
+        definitionsError: true
+      })
+      setTimeout(() => {
+        this.setState({
+          definitionVisibility: 0
+        })
+      }, 5000)
+    } else {
+      this.setState({
+        definitionVisibility: 1,
+        definitionsError: false,
+        definitions: data.body
+      })
+      setTimeout(() => {
+        this.setState({
+          definitionVisibility: 0,
+          definitionsError: true
+        })
+      }, 10000)
+    }
   }
 
   async componentDidMount() {
@@ -276,13 +298,33 @@ class Story extends Component {
           </div>
           <div
             className="definitions"
-            style={{opacity: this.state.suggestionVisibility}}
+            style={{opacity: this.state.definitionVisibility}}
           >
-            In Search of Lost <strike>Time</strike> Words? Maybe Something Like
-            This Could Go Next...<br /> <h3>"{this.state.suggestion}"</h3>
+            {this.state.definitionsError ? (
+              <div>
+                <h2>Sorry, we cannot find a definition for that.</h2>
+              </div>
+            ) : (
+              <div>
+                <h2>Definitions for {this.state.definitions.word}:</h2>
+                <div>
+                  {this.state.definitions.definitions.map(def => {
+                    return (
+                      <div className="defItem">
+                        <h4>
+                          <i>{def.partOfSpeech}</i>
+                        </h4>
+                        <h3>
+                          <i>{def.definition}</i>
+                        </h3>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        {/* <StoryComp ref={ckE => this.ck = ckE} onChange={this.onChange}/> */}
       </div>
     )
   }
