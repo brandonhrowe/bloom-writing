@@ -84,8 +84,6 @@ class Story extends Component {
   //   }
 
   writing(text, uniqueId, shouldBroadcast = true, event) {
-    console.log('this.uniqueId within writing', this.uniqueId)
-    console.log('uniqueId within writing', uniqueId)
     // if (this.uniqueId !== uniqueId) {
     this.setState({
       text
@@ -188,10 +186,10 @@ class Story extends Component {
           placeholder="Start your story here..."
           // onChange={() => this.handleTextChange()}
         /> */}
-        <h1>
+        <h1 className="prompt">
           <u>{this.state.prompt}</u>
         </h1>
-        <h5>Word Count: {this.state.length}</h5>
+        <h4>Word Count: {this.state.length}</h4>
         <CKEditor
           id="story"
           editor={ClassicEditor}
@@ -210,7 +208,7 @@ class Story extends Component {
           style={{opacity: this.state.suggestionVisibility}}
         >
           In Search of Lost <strike>Time</strike> Words? Maybe Something Like
-          This Could Help...<br /> <h4>"{this.state.suggestion}"</h4>
+          This Could Go Next...<br /> <h3>"{this.state.suggestion}"</h3>
         </div>
         {/* <StoryComp ref={ckE => this.ck = ckE} onChange={this.onChange}/> */}
       </div>

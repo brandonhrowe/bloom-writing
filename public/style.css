@@ -1,17 +1,38 @@
 body {
-  font-family: sans-serif; }
+  font-family: 'Josefin Sans', sans-serif;
+  background: linear-gradient(#3cb2e9, #a7cce4);
+  background-attachment: fixed;
+  height: 100vh;
+  margin: 0em;
+  padding: 0em; }
   body a {
     text-decoration: none; }
   body label {
     display: block; }
-  body nav a {
-    display: inline-block;
-    margin: 1em; }
+  body .story-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 3em; }
+    body .story-container h1 {
+      text-align: center;
+      border-radius: 2em;
+      border-color: black; }
+  body .nav-bar-container {
+    padding: 1em;
+    background-image: linear-gradient(to right, rbga(255, 0, 0, 0), red); }
+  body nav {
+    margin: 0em; }
+    body nav div {
+      margin: 0em; }
+      body nav div h1 {
+        margin: 0em; }
+    body nav a {
+      display: inline-block; }
   body form div {
-    margin: 1em;
+    margin: 2em;
+    padding: 2em;
     display: inline-block; }
   body .suggestion {
-    position: absolute;
     opacity: 0;
     transition: 0.5s all; }
 
