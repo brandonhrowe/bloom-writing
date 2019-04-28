@@ -51,6 +51,7 @@ body {
   .auth-form-container {
     display: flex;
     flex-direction: row;
+    font-size: 1.5em;
     h1 {
       flex: 2;
       padding-left: 5vw;
@@ -68,6 +69,7 @@ body {
     display: flex;
     .welcome {
       flex: 1;
+      font-size: 1.5em;
     }
     .buttons {
       flex: 1;
@@ -149,5 +151,9 @@ body {
     // width: 300px;
     display: flex;
     justify-content: space-between;
+  }
+
+  .highlight-hint {
+    text-align: center;
   }
 }

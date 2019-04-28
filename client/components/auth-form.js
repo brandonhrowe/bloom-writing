@@ -10,7 +10,7 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
 
   return (
-    <div className='auth-form-container'>
+    <div className="auth-form-container">
       <form onSubmit={handleSubmit} name={name}>
         {name === 'signup' && (
           <div>
@@ -37,7 +37,12 @@ const AuthForm = props => {
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
-      <h1>Hello, and welcome to BLOOM WRITING! This is a place that provides users with a place to write, generating random prompts with which to start. Log In or Sign Up to start!</h1>
+      <h1>
+        WELCOME TO BLOOM WRITING!<br />
+        <br />This is a place that provides users with a place to write,
+        generating random prompts with which to start.<br /><br />Log In or Sign Up to
+        start!
+      </h1>
     </div>
   )
 }
@@ -72,8 +77,11 @@ const mapDispatch = dispatch => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      const username = evt.target.username.value
-      dispatch(auth(email, password, username, formName))
+      let username
+      if (evt.target.username){
+        username = evt.target.username.value
+      }
+      dispatch(auth(email, password, formName, username))
     }
   }
 }

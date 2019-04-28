@@ -27,8 +27,7 @@ class UserHome extends Component {
             </li>
           </ul>
           <h2>
-            Then, to the right, you can either start a new story or go back to a
-            previous one.
+            Click an option to start!
           </h2>
         </div>
         <div className="buttons">
