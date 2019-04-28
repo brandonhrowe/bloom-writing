@@ -21,7 +21,7 @@ class Story extends Component {
       prompt: 'A prompt is loading. Please wait...',
       text: '<p>Write your story here!</p>',
       suggestion: '',
-      length: 0
+      length: 4
       //text should be the text pulled from the backend; the default for a new story should be "Write your story here"
     }
     this.uniqueId = Math.floor(Math.random() * 10000000000)
@@ -99,12 +99,10 @@ class Story extends Component {
 
   update(event, editor) {
     // event.preventDefault()
-    console.log(event, editor)
     const data = editor.getData()
     this.setState({
-      length: this.state.text.split(' ').length
+      length: data.split(' ').length
     })
-    console.log('data to be sent out from update function', data)
     this.socket.emit(
       'type-from-client',
       this.state.prompt,
@@ -116,12 +114,13 @@ class Story extends Component {
 
   async suggestion(event, editor) {
     const text = editor.getData()
-    if (text.split(' ').length > 20) {
+    if (this.state.length > 20) {
       const {data} = await axios.post('/prompts/suggestion', {text})
-      let oldLength = text.length
+      let oldLength = text.split(' ').length
       let newLength
       setTimeout(() => {
-        newLength = editor.getData()
+        let newData = editor.getData()
+        newLength = newData.split(' ').length
         if (oldLength === newLength) {
           this.setState({
             suggestion: data
@@ -139,11 +138,11 @@ class Story extends Component {
     })
   }
 
-  // shouldComponentUpdate(nextProps, nextState){
-  //   if (this.state !== nextState){
-  //     return true
-  //   }
-  // }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state !== nextState) {
+      return true
+    }
+  }
 
   // handleTextChange(event) {
   //   event.preventDefault()
@@ -182,12 +181,10 @@ class Story extends Component {
           placeholder="Start your story here..."
           // onChange={() => this.handleTextChange()}
         /> */}
-        <h1>{this.state.prompt}</h1>
-        <h2>
-          In Search of Lost <strike>Time</strike> Words? Maybe Something Like
-          This Could Help...<br /> {this.state.suggestion}
-        </h2>
-        <br />
+        <h1>
+          <u>{this.state.prompt}</u>
+        </h1>
+        <h5>Word Count: {this.state.length}</h5>
         <CKEditor
           id="story"
           editor={ClassicEditor}
@@ -200,6 +197,11 @@ class Story extends Component {
             this.suggestion(event, editor)
           }}
         />
+        <br />
+        <div>
+          In Search of Lost <strike>Time</strike> Words? Maybe Something Like
+          This Could Help...<br /> <h4>"{this.state.suggestion}"</h4>
+        </div>
         {/* <StoryComp ref={ckE => this.ck = ckE} onChange={this.onChange}/> */}
       </div>
     )
