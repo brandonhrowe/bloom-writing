@@ -4,7 +4,7 @@ import axios from 'axios'
  * ACTION TYPES
  */
 const GET_STORY = 'GET_STORY'
-const CREATE_NEW_STORY = 'NEW_STORY'
+// const CREATE_NEW_STORY = 'NEW_STORY'
 const EDIT_STORY = 'EDIT_STORY'
 
 /**
@@ -147,8 +147,6 @@ const getStory = story => ({type: GET_STORY, story})
 export default function(state = defaultStory, action) {
   switch (action.type) {
     case GET_STORY:
-      return action.story
-    case CREATE_NEW_STORY:
       return action.story
     case EDIT_STORY:
       return { ...state, text: action.story}
