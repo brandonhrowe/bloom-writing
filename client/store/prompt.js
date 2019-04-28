@@ -19,13 +19,6 @@ const getPrompt = prompt => ({type: GET_PROMPT, prompt})
  * THUNK CREATORS
  */
 
-//WORKFLOW:
-//1. Start with predefined sentence: `Write a story about ${adjective} ${noun} that ${adverb} ${verb}
-//2. Adjective and adverb shouldn't make any difference
-//3. Get random noun and, all within a while loop, run it through meaning cloud (you'll need to put it in as "a%20noun" to make sure the api is looking at the noun version of the word if there is one). If the form is common singular, set an outside variable to "single", set a noun variable to be "a [noun]" or "an [noun]", depending on first letter, and get out of the loop. If word is plural, set variable to "plural", set word to noun variable, and get out of loop. If neither of those checks out, stay in the while loop.
-//Outside of the while loop, you'll want to create a recursive function to navigate through the tiers of the meaning cloud response. You'd send in res.body and for each other recursion, you'd pass in the token_list.
-//4. Based on the "single" or "plural" variable, this will determine which type of verb to search for. All sentences can be a consistent tense.
-
 const nounCheckMeaningCloud = body => {
   //This is a helper function to determine if the noun is valid to use, and what form it is
   console.log('in helper function, before anything')

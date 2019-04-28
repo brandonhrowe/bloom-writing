@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {createStoryThunk} from '../store'
 
@@ -7,12 +6,9 @@ import {createStoryThunk} from '../store'
  * COMPONENT
  */
 class UserHome extends Component {
-  constructor(){
-    super()
-  }
 
   render() {
-    const {username, createNewStory, story, history} = this.props
+    const {username, history} = this.props
 
     return (
       <div className="user-home">
@@ -40,7 +36,6 @@ class UserHome extends Component {
             className="button-room-of-own"
             type="button"
             onClick={() => {
-              // await createNewStory()
               history.push(`/story/new`)
             }}
           >
@@ -63,7 +58,6 @@ class UserHome extends Component {
 const mapState = state => {
   return {
     username: state.user.username,
-    story: state.story
   }
 }
 const mapDispatch = dispatch => {

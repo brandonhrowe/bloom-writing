@@ -1,17 +1,12 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {getStoriesThunk} from '../store'
-import {Link} from 'react-router-dom'
 import history from '../history'
 
 /**
  * COMPONENT
  */
 class StoriesList extends Component {
-  // constructor(props) {
-  //   super(props)
-  // }
 
   componentDidMount() {
     this.props.loadStories()

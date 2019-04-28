@@ -13,7 +13,7 @@ async function seed() {
     password: '123'
   })
 
-  const story = await Story.create({prompt: 'This is a sample prompt.', userId: user.id})
+  const story = await Story.create({prompt: 'This is my story!.', userId: user.id})
 
 
   console.log(`seeded successfully`)
