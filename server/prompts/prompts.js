@@ -97,7 +97,7 @@ router.post('/suggestion', async (req, res, next) => {
       'Fortunately, ',
       'Unfortunately, ',
       'To the dismay of everyone, ',
-      'But if one to recall, '
+      'But if one were to recall, '
     ]
     const suggestions = [
       `${
