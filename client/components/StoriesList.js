@@ -28,11 +28,20 @@ class StoriesList extends Component {
     return (
       <div className="stories-list-container">
         <h1>{user.username}'s Stories:</h1>
-        {stories.map(story => {
-          return (
-            <p id={story.id} key={story.id} className="story-list-item" onClick={this.handleClick}>{story.prompt}</p>
-          )
-        })}
+        <ol>
+          {stories.sort((a, b) => a.id - b.id).map(story => {
+            return (
+              <li
+                id={story.id}
+                key={story.id}
+                className="story-list-item"
+                onClick={this.handleClick}
+              >
+                {story.prompt}
+              </li>
+            )
+          })}
+        </ol>
       </div>
     )
   }

@@ -82,6 +82,15 @@ body {
   .stories-list-container {
     padding-left: 5vw;
     padding-bottom: 2em;
+    li {
+      padding: 1em;
+      font-size: 2em;
+      margin-left: 1vw;
+      margin-right: 1vw;
+    }
+    li:hover {
+      color: #df5c05;
+    }
   }
 
   nav {

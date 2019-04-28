@@ -54,6 +54,13 @@ body {
   body .stories-list-container {
     padding-left: 5vw;
     padding-bottom: 2em; }
+    body .stories-list-container li {
+      padding: 1em;
+      font-size: 2em;
+      margin-left: 1vw;
+      margin-right: 1vw; }
+    body .stories-list-container li:hover {
+      color: #df5c05; }
   body nav {
     margin: 0em; }
     body nav div {
