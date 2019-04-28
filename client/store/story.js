@@ -36,7 +36,7 @@ const getStory = story => ({type: GET_STORY, story})
   return async dispatch => {
     try {
       const {data} = await axios.get(`/api/stories/create`)
-      dispatch(getStory(data))
+      // dispatch(getStory(data))
     } catch (error) {
       console.log(error)
     }

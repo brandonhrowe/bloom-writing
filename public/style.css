@@ -13,6 +13,14 @@ body {
     display: flex;
     flex-direction: column;
     padding: 1em 3em; }
+    body .story-container .wordcount-save {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between; }
+      body .story-container .wordcount-save button {
+        flex-basis: 10em;
+        margin: 1em;
+        background-color: #e0750b; }
     body .story-container h1 {
       text-align: center;
       border-radius: 2em;

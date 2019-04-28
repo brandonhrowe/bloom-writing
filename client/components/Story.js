@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {createStoryThunk, getStoryThunk} from '../store'
+import {createStoryThunk, getStoryThunk, editStoryThunk} from '../store'
 // import socket from '../socket'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
@@ -113,6 +113,9 @@ class Story extends Component {
 
   async suggestion(event, editor) {
     const text = editor.getData()
+    this.setState({
+      length: text.split(' ').length
+    })
     if (this.state.length > 20) {
       const {data} = await axios.post('/prompts/suggestion', {text})
       let oldLength = text.split(' ').length
@@ -135,18 +138,32 @@ class Story extends Component {
     }
   }
 
+  handleSave(event, editor) {
+    const {id} = this.props.story
+    const oldText = editor.getData()
+    console.log("storyid:", id)
+    setTimeout(async () => {
+      let newText = editor.getData()
+      console.log("newText:", newText)
+      if (oldText === newText){
+        // this.props.saveStory(id, newText)
+        const {data} = await axios.put(`/api/stories/story`, {"storyId": id, "text": oldText})
+        console.log("story saved. Data: ", data)
+      }
+    }, 1000)
+  }
+
   async componentDidMount() {
     // Here the prompt itself should be loaded - both on the page and in the state. It will then be passed in as the 'prompt' field to distinguish rooms
     // const {data} = await axios.get('/prompts')
     // this.setState({
     //   prompt: data
     // })
-    if (!this.props.match.params.storyId){
+    if (!this.props.match.params.storyId) {
       await this.props.loadNewStory()
-      console.log("this.props within component mounting", this.props)
+      console.log('this.props within component mounting', this.props)
       // this.props.location.pathname = `/story/${this.props.story.id}`
-    }
-    else {
+    } else {
       this.props.loadExistingStory(this.props.match.params.storyId)
     }
   }
@@ -196,9 +213,18 @@ class Story extends Component {
           // onChange={() => this.handleTextChange()}
         /> */}
         <h1 className="prompt">
-          <u>{story.prompt ? story.prompt : 'Waiting for Godot. Or a prompt. Whichever comes first...'}</u>
+          <u>
+            {story.prompt
+              ? story.prompt
+              : 'Waiting for Godot. Or a prompt. Whichever comes first...'}
+          </u>
         </h1>
-        <h4>Word Count: {this.state.length}</h4>
+        <div className="wordcount-save">
+          <h4>Word Count: {this.state.length}</h4>
+          <button className="save-button" type="button">
+            <strong>SAVE</strong>
+          </button>
+        </div>
         <CKEditor
           id="story"
           editor={ClassicEditor}
@@ -207,8 +233,9 @@ class Story extends Component {
             console.log('Editor is ready to use!', editor)
           }}
           onChange={(event, editor) => {
-            this.update(event, editor)
+            // this.update(event, editor)
             this.suggestion(event, editor)
+            this.handleSave(event, editor)
           }}
         />
         <br />
@@ -238,7 +265,7 @@ class Story extends Component {
  */
 const mapState = state => {
   return {
-    story: state.story,
+    story: state.story
   }
 }
 
@@ -247,8 +274,11 @@ const mapDispatch = dispatch => {
     async loadNewStory() {
       await dispatch(createStoryThunk())
     },
-    async loadExistingStory(id){
+    async loadExistingStory(id) {
       await dispatch(getStoryThunk(id))
+    },
+    saveStory(id, text) {
+      dispatch(editStoryThunk(id, text))
     }
   }
 }

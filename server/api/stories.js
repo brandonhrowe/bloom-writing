@@ -109,18 +109,20 @@ router.get('/create', async (req, res, next) => {
   }
 })
 
-router.put('/story/:storyId', async (req, res, next) => {
+router.put('/story', async (req, res, next) => {
   try {
     if (req.user) {
       const userId = req.user.dataValues.id
-      const {text} = req.body
+      const {storyId, text} = req.body
+      console.log("in update story route. storyId passed in: ", storyId, text)
       const story = await Story.update(
         {
           text
         },
         {
           where: {
-            userId
+            userId,
+            id: storyId
           }
         }
       )
