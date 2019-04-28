@@ -10,8 +10,16 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
 
   return (
-    <div>
+    <div className='auth-form-container'>
       <form onSubmit={handleSubmit} name={name}>
+        {name === 'signup' && (
+          <div>
+            <label htmlFor="email">
+              <small>Email</small>
+            </label>
+            <input name="email" type="text" />
+          </div>
+        )}
         <div>
           <label htmlFor="email">
             <small>Email</small>
@@ -29,7 +37,7 @@ const AuthForm = props => {
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
-      <a href="/auth/google">{displayName} with Google</a>
+      <h1>Hello, and welcome to Bloom Writing! This is a place that provides users with a place to write, generating random prompts with which to start. Log In or Sign Up to start!</h1>
     </div>
   )
 }

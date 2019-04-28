@@ -33,16 +33,51 @@ body {
     }
   }
 
+  .auth-form-container {
+    display: flex;
+    flex-direction: row;
+    h1 {
+      flex: 2;
+      padding-left: 5vw;
+      padding-right: 5vw;
+    }
+  }
+
   .nav-bar-container {
     padding: 1em;
-    background-image: linear-gradient(to right, rbga(255, 0, 0, 0), rgba(255, 0, 0, 1));
+  }
+
+  .user-home {
+    padding-left: 5vw;
+    padding-right: 5vw;
+    display: flex;
+    .welcome {
+      flex: 1;
+    }
+    .buttons {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      button {
+        background-color: #f44336;
+        margin: 10px;
+        padding: 0px;
+        width: 20vw;
+      }
+    }
   }
 
   nav {
-
     margin: 0em;
+    // display: flex;
+    // justify-content: space-between;
     div {
       margin: 0em;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
       h1 {
         margin: 0em;
       }
@@ -52,10 +87,20 @@ body {
     }
   }
 
+  form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+  }
+
   form div {
-    margin: 2em;
-    padding: 2em;
-    display: inline-block;
+    margin: 1em;
+    margin-left: 5em;
+    // padding: 1em;
+    // width: 300px;
+    display: flex;
+    justify-content: space-between;
   }
 
   .suggestion {
