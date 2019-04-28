@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+import {createStoryThunk} from '../store'
 
 /**
  * COMPONENT
  */
 export const UserHome = props => {
-  const {username} = props
+  const {username, createNewStory, story} = props
 
   return (
     <div className="user-home">
@@ -21,7 +22,10 @@ export const UserHome = props => {
         <h2>Then, to the right, you can either start a new story or go back to a previous one.</h2>
       </div>
       <div className="buttons">
-        <button className="button-room-of-own" type="button">
+        <button className="button-room-of-own" type="button" onClick={()=>{
+          createNewStory()
+          history.push(`/story/${story.id}`)
+        }}>
           <h1>Start a New Story</h1>
         </button>
         <button className="button-metamorphosis" type="button">
@@ -37,11 +41,19 @@ export const UserHome = props => {
  */
 const mapState = state => {
   return {
-    username: state.user.username
+    username: state.user.username,
+    story: state.story,
+  }
+}
+const mapDispatch = dispatch => {
+  return {
+    createNewStory: () => {
+      return dispatch(createStoryThunk())
+    }
   }
 }
 
-export default connect(mapState)(UserHome)
+export default connect(mapState, mapDispatch)(UserHome)
 
 /**
  * PROP TYPES

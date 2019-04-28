@@ -18,7 +18,7 @@ class Story extends Component {
     super(props)
     this.state = {
       endpoint: window.location.origin,
-      prompt: 'A prompt is loading. Please wait...',
+      prompt: 'Waiting for Godot. Or a prompt. Whichever comes first...',
       text: '<p>Write your story here!</p>',
       suggestion: '',
       length: 4,
