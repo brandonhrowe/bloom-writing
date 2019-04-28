@@ -54,6 +54,15 @@ body {
         margin: 10px;
         padding: 0px;
         width: 20vw; }
+  body .story-bottom-container {
+    display: flex;
+    flex-direction: row; }
+    body .story-bottom-container .suggestion {
+      transition: 0.5s all;
+      flex: 1; }
+    body .story-bottom-container .definitions {
+      transition: 0.5s all;
+      flex: 1; }
   body .stories-list-container {
     padding-left: 5vw;
     padding-bottom: 2em;
@@ -90,8 +99,5 @@ body {
     margin-left: 5em;
     display: flex;
     justify-content: space-between; }
-  body .suggestion {
-    opacity: 0;
-    transition: 0.5s all; }
 
 /*# sourceMappingURL=style.css.map*/

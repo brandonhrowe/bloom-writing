@@ -123,23 +123,28 @@ class Story extends Component {
     })
     if (this.state.length > 20) {
       const {data} = await axios.post('/prompts/suggestion', {text})
-      let oldLength = text.split(' ').length
+      let oldLength = text.length
       let newLength
       setTimeout(() => {
         let newData = editor.getData()
-        newLength = newData.split(' ').length
+        newLength = newData.length
         if (oldLength === newLength) {
           this.setState({
             suggestion: data,
             suggestionVisibility: 1
           })
         }
-        if (oldLength !== newLength) {
+        else if (oldLength !== newLength) {
           this.setState({
             suggestionVisibility: 0
           })
         }
       }, 5000)
+      setTimeout(() => {
+        this.setState({
+          suggestionVisibility: 0
+        })
+      }, 30000)
     }
   }
 
@@ -195,7 +200,6 @@ class Story extends Component {
       setTimeout(() => {
         this.setState({
           definitionVisibility: 0,
-          definitionsError: true
         })
       }, 10000)
     }
@@ -310,7 +314,7 @@ class Story extends Component {
                 <div>
                   {this.state.definitions.definitions.map(def => {
                     return (
-                      <div className="defItem">
+                      <div className="defItem" key={def.definition}>
                         <h4>
                           <i>{def.partOfSpeech}</i>
                         </h4>

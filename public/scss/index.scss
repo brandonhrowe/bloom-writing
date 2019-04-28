@@ -84,6 +84,19 @@ body {
     }
   }
 
+  .story-bottom-container {
+    display: flex;
+    flex-direction: row;
+    .suggestion {
+      transition: 0.5s all;
+      flex: 1;
+    }
+    .definitions {
+      transition: 0.5s all;
+      flex: 1;
+    }
+  }
+
   .stories-list-container {
     padding-left: 5vw;
     padding-bottom: 2em;
@@ -136,10 +149,5 @@ body {
     // width: 300px;
     display: flex;
     justify-content: space-between;
-  }
-
-  .suggestion {
-    opacity: 0;
-    transition: 0.5s all;
   }
 }
