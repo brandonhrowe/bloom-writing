@@ -147,7 +147,7 @@ class Story extends Component {
       console.log("newText:", newText)
       if (oldText === newText){
         // this.props.saveStory(id, newText)
-        const {data} = await axios.put(`/api/stories/story`, {"storyId": id, "text": oldText})
+        const {data} = await axios.put(`/api/stories/story`, {"storyId": id, "text": oldText, "length": this.state.length})
         console.log("story saved. Data: ", data)
       }
     }, 1000)

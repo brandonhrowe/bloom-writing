@@ -113,11 +113,12 @@ router.put('/story', async (req, res, next) => {
   try {
     if (req.user) {
       const userId = req.user.dataValues.id
-      const {storyId, text} = req.body
+      const {storyId, text, length} = req.body
       console.log("in update story route. storyId passed in: ", storyId, text)
       const story = await Story.update(
         {
-          text
+          text,
+          length
         },
         {
           where: {

@@ -30,6 +30,7 @@ class Routes extends Component {
             <Route path="/story/:storyId" component={Story} />
             <Route path="/yourstories" component={StoriesList} />
             <Route path="/story" component={Story} />
+            <Route path="/" component={UserHome} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
