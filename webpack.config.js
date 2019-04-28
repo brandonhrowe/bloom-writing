@@ -4,7 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 module.exports = {
   mode: isDev ? 'development' : 'production',
   entry: [
-    './public/scss/index.scss',
+    // './public/scss/index.scss',
     '@babel/polyfill', // enables async-await
     './client/index.js'
   ],
