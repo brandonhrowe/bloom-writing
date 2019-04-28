@@ -22,7 +22,8 @@ class Story extends Component {
       // text: '<p>Write your story here!</p>',
       length: 4,
       suggestion: '',
-      suggestionVisibility: 0
+      suggestionVisibility: 0,
+      saveVisibility: 0
       //text should be the text pulled from the backend; the default for a new story should be "Write your story here"
     }
     this.uniqueId = Math.floor(Math.random() * 10000000000)
@@ -149,9 +150,16 @@ class Story extends Component {
       if (oldText === newText){
         // this.props.saveStory(id, newText)
         const {data} = await axios.put(`/api/stories/story`, {"storyId": id, "text": oldText, "length": this.state.length})
-        console.log("story saved. Data: ", data)
+        this.setState({
+          saveVisibility: 1
+        })
       }
     }, 1000)
+    setTimeout(() => {
+      this.setState({
+        saveVisibility: 0
+      })
+    }, 6000)
   }
 
   async componentDidMount() {
@@ -223,9 +231,7 @@ class Story extends Component {
         </h1>
         <div className="wordcount-save">
           <h4>Word Count: {this.state.length}</h4>
-          <button className="save-button" type="button">
-            <strong>SAVE</strong>
-          </button>
+          <div className="save" style={{opacity: this.state.saveVisibility}}>Story has been saved</div>
         </div>
         <CKEditor
           id="story"

@@ -30,10 +30,11 @@ body {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      button {
+      .save {
         flex-basis: 10em;
         margin: 1em;
-        background-color: #e0750b;
+        opacity: 0;
+        transition: 0.5s all;
       }
     }
     h1 {

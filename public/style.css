@@ -17,10 +17,11 @@ body {
       display: flex;
       flex-direction: row;
       justify-content: space-between; }
-      body .story-container .wordcount-save button {
+      body .story-container .wordcount-save .save {
         flex-basis: 10em;
         margin: 1em;
-        background-color: #e0750b; }
+        opacity: 0;
+        transition: 0.5s all; }
     body .story-container h1 {
       text-align: center;
       border-radius: 2em;
