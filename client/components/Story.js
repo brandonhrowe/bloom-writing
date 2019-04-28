@@ -19,7 +19,9 @@ class Story extends Component {
     this.state = {
       endpoint: window.location.origin,
       prompt: 'A prompt is loading. Please wait...',
-      text: '<p>Write your story here!</p>'
+      text: '<p>Write your story here!</p>',
+      suggestion: '',
+      length: 0
       //text should be the text pulled from the backend; the default for a new story should be "Write your story here"
     }
     this.uniqueId = Math.floor(Math.random() * 10000000000)
@@ -57,13 +59,14 @@ class Story extends Component {
       // }
     })
 
-    events.on('change:data', text => {
-      console.log('this.events.on change:data called. text:', text)
-      this.socket.emit('type-from-client', this.state.prompt, text)
-    })
+    // events.on('change:data', text => {
+    //   console.log('this.events.on change:data called. text:', text)
+    //   this.socket.emit('type-from-client', this.state.prompt, text)
+    // })
     // this.send = this.send.bind(this)
     this.writing = this.writing.bind(this)
     this.update = this.update.bind(this)
+    this.suggestion = this.suggestion.bind(this)
   }
 
   // send = content => {
@@ -98,6 +101,9 @@ class Story extends Component {
     // event.preventDefault()
     console.log(event, editor)
     const data = editor.getData()
+    this.setState({
+      length: this.state.text.split(' ').length
+    })
     console.log('data to be sent out from update function', data)
     this.socket.emit(
       'type-from-client',
@@ -108,6 +114,23 @@ class Story extends Component {
     )
   }
 
+  async suggestion(event, editor) {
+    const text = editor.getData()
+    if (text.split(' ').length > 20) {
+      const {data} = await axios.post('/prompts/suggestion', {text})
+      let oldLength = text.length
+      let newLength
+      setTimeout(() => {
+        newLength = editor.getData()
+        if (oldLength === newLength) {
+          this.setState({
+            suggestion: data
+          })
+        }
+      }, 5000)
+    }
+  }
+
   async componentDidMount() {
     // Here the prompt itself should be loaded - both on the page and in the state. It will then be passed in as the 'prompt' field to distinguish rooms
     const {data} = await axios.get('/prompts')
@@ -115,6 +138,12 @@ class Story extends Component {
       prompt: data
     })
   }
+
+  // shouldComponentUpdate(nextProps, nextState){
+  //   if (this.state !== nextState){
+  //     return true
+  //   }
+  // }
 
   // handleTextChange(event) {
   //   event.preventDefault()
@@ -154,16 +183,21 @@ class Story extends Component {
           // onChange={() => this.handleTextChange()}
         /> */}
         <h1>{this.state.prompt}</h1>
+        <h2>
+          In Search of Lost <strike>Time</strike> Words? Maybe Something Like
+          This Could Help...<br /> {this.state.suggestion}
+        </h2>
+        <br />
         <CKEditor
           id="story"
           editor={ClassicEditor}
           data={this.state.text}
           onInit={editor => {
-            // You can store the "editor" and use when it is needed.
             console.log('Editor is ready to use!', editor)
           }}
           onChange={(event, editor) => {
             this.update(event, editor)
+            this.suggestion(event, editor)
           }}
         />
         {/* <StoryComp ref={ckE => this.ck = ckE} onChange={this.onChange}/> */}
