@@ -131,11 +131,11 @@ class Story extends Component {
           </u>
         </h1>
         <div className="wordcount-save">
-          <h4>Word Count: {length}</h4>
+          <h4 className="highlight-hint">Not sure what a word means?<br></br>Highlight it!</h4>
           <div className="save" style={{opacity: saveVisibility}}>
             Story has been saved
           </div>
-          <h4 className="highlight-hint">Not sure what a word means?<br></br>Highlight it!</h4>
+          <h4>Word Count: {length}</h4>
         </div>
         <CKEditor
           id="story"

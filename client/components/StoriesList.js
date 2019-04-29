@@ -7,7 +7,6 @@ import history from '../history'
  * COMPONENT
  */
 class StoriesList extends Component {
-
   componentDidMount() {
     this.props.loadStories()
   }
@@ -22,7 +21,11 @@ class StoriesList extends Component {
 
     return (
       <div className="stories-list-container">
-        {stories.length ? <h1>{user.username}'s Stories:</h1> : <h1>It looks like you need to build your library!</h1>}
+        {stories.length ? (
+          <h1>{user.username}'s Stories:</h1>
+        ) : (
+          <h1>It looks like you need to build your library!</h1>
+        )}
         <ol>
           {stories.sort((a, b) => a.id - b.id).map(story => {
             return (
@@ -33,6 +36,8 @@ class StoriesList extends Component {
                 onClick={this.handleClick}
               >
                 {story.prompt}
+                <br />
+                <h6>Word Count: {story.length}</h6>
               </li>
             )
           })}
