@@ -42,49 +42,59 @@ npm run start-dev
 
 # Usage
 
-## Login
+### Login
 
 First, a user will need to either login or signup upon loading the site. This is to assure that any story they write is saved for them.
 
-## Home
+### Home
 
 Upon login, the home page is loaded. Currently, there is only one "mode" of "A Room of One's Own" that is defaulted (more on the two modes below in Plans for the Future). In short, users are the sole author to their stories and only they can access them.
 
+![User home page. At top, they would select the mode with which to use the program, then the buttons start up a new page or page list. In future versions, all options will be brought into the nav bar.](/public/Bloom_Home.png)
+
 From the main page, the user can either start a new story or see all their past stories.
 
-## Story
+### Story
 
-Upon loading a new story (which is automatically saved to the database), a random prompt is generated at the top of the page. Below that is a text editor for the user to write!
+Upon loading a new story (which is automatically saved to the database), a random prompt is generated at the top of the page. Below that is a text editor for the user to write.
+
+![Story page](/public/Bloom_Story_New.png)
 
 Let's say a user has started a story, but they have reached a block. If they have not typed anything for a few seconds, a suggestion sentence will pop up in the bottom-left of the page, which will hopefully have some connection to what they've written so far. To not clutter the user's view, this suggestion will disappear after a few seconds.
 
+![Suggestion sentence](/public/Bloom_Story_Suggestion.png)
+
 Also, let's say a user doesn't know what a word in the prompt means. They can highlight a word and a list of definitions will be loaded into the bottom-right of the screen. Again, this will disappear after a few seconds to not bother the user as they write.
 
-## List View
+![Definition upon highlighting word in prompt](/public/Bloom_Story_Definition.png)
+
+### List View
 
 From the list view, the user can select one and return to wherever they last left off with that story.
 
+![List view](/public/Bloom_List.png)
+
 # Features
 
-## Random Prompt
+### Random Prompt
 
 Upon loading up a new story, the user will also be given a random prompt.
 
 This is done using a selection of template sentences and a combination of Sentencer, WordsAPI, and Compromise. Sentencer generates nouns and adjectives and gives the correct form of the word requested (ex. passing in the string "{{ a_noun }}" could give you "a bear" or "an elephant"). WordsAPI retrieves random verbs and adverbs, and then the values are passed into Compromise to mutate the form of the verb depending on the needs of the template (ex. convert "run" to "ran" for past tense).
 
-## Suggestion Sentences
+### Suggestion Sentences
 
 If the user has writen a bit (currently configured for a minimum of twenty words) and does not type for a while (currently configured for five seconds), they might need a suggestion for where to go next. The program will generate a suggested sentence utilizing information from what the user has already written.
 
 This is done by using Compromise. The text within the editor is passed through Compromise to pick out all the nouns, verbs, and tense of the sentence. Then this data is parsed out to more templates and sent to the front end.
 
-## Dictionary Definitions
+### Dictionary Definitions
 
 When the user highlights a word within the prompt, the definitions for that word are generated.
 
 When the prompt is clicked, an event listens for any text that is highlighted in the window. If there is text, it is sent to the WordsAPI and any definitions are sent back.
 
-## Autosave
+### Autosave
 
 Stories are saved as they go. Whenever a user stops typing, the text is sent back to the database and the story is saved for future use.
 
@@ -92,30 +102,30 @@ Stories are saved as they go. Whenever a user stops typing, the text is sent bac
 
 Bloom was build using the following technology:
 
-## Compromise
+### Compromise
 For analyzing text and parsing out text by part of speech and form.
 
-## Sentencer
+### Sentencer
 For randomly generating nouns and adjectives, including the proper syntax.
 
-## WordsAPI
+### WordsAPI
 For supplying randomly generated verbs and adverbs, as well as getting definitions.
 
-## CKEditor
+### CKEditor
 For a clean, rich-text area for writing that includes bold, italics, etc.
 
-## Randy
+### Randy
 For easily pulling random values from arrays.
 
-## React
+### React
 For components.
 
-## Redux
+### Redux
 For global state storage (some state elements are held in React components).
 
 # Plans For the Future
 
-## Multi-User Mode (Metamorphoses)
+### Multi-User Mode (Metamorphoses)
 
 There will ideally be two methods with which to use Bloom: a solo writing experience called "A Room of One's Own", where the user is in charge of their own stories, and a realtime iteration called "Metamorphoses", where any number of people can join in on a story and create together.
 
@@ -123,18 +133,18 @@ Currently, only the first user experience is active. The issue that needs to be 
 
 My initial attempts were sending the whole text back and forth, which created a feedback loop if typing too quickly. I'll need to instead find a way to just send actions over the sockets.
 
-## Download
+### Download
 
 Users should also be able to download their stories as a rich-text file. A potential hurdle will be accounting for styling (bold, italicized, etc.), which is contained within the text data for CKEditor.
 
-## Layout/Clean Up
+### Layout/Clean Up
 
 Clean up the style a little bit more. Ideally, user should be able to access either a new story or story list from a dropdown menu, rather than having to go back to the home page.
 
-## Params Bug
+### Params Bug
 
 There is currently a slight bug where starting a new story requires going to the "/story/new" directory. Even though the story saves, if the user refreshes, they will create a new story. Ideally, a new story should be created and the URL should reflect the id of that story.
 
-## More Literary Puns
+### More Literary Puns
 
-Always more...
+I Vonnegut all the puns.
