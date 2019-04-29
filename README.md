@@ -26,3 +26,5 @@ These are a few features for Bloom that will hopefully be implemented soon:
 
 -There will ideally be two methods with which to use Bloom: a solo writing experience called "A Room of One's Own", where the user is in charge of their own stories, and a realtime iteration called "Metamorphoses", where any number of people can join in on a story and create together. Currently, only the first user experience is active. While progress was made in implementing Socket.io into the architecture, there were still major collision issues that could not be resolved at the present time.
 -Users should also be able to download their stories as a rich-text file.
+-Clean up the style a little bit more, including a unique favicon.
+-More literary puns!
