@@ -63,7 +63,7 @@ class Story extends Component {
         const {data} = await axios.put(`/api/stories/story`, {
           storyId: id,
           text: oldText,
-          length: length
+          length: this.state.length
         })
         this.setState({
           saveVisibility: 1
