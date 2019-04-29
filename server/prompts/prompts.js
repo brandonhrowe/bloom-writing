@@ -56,7 +56,7 @@ router.get('/', async (req, res, next) => {
       `Write a story where, instead of speaking, the characters ${verb}.`,
       `Write a story consisting of only dialogue between {{ a_noun }} and {{ nouns }}.`,
       `Write a story about a city where {{ nouns }} ${verb} and the {{ nouns }} are {{ adjective }}.`,
-      `Write a story that begins, "If on {{ a_noun }}'s night {{ a_noun }}..."`,
+      `Write a story that begins, "If on {{ a_noun }}'s night {{ a_noun }}..." `,
       `Write a story about {{ a_noun }} that lives in {{ a_noun }}.`
     ]
     const prompt = Sentencer.make(randy.choice(prompts))
