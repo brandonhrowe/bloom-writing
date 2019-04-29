@@ -23,11 +23,11 @@ class UserHome extends Component {
             <br />
             <li>
               <strong>The Metamorphosis</strong> is for collaborating with
-              others in real time on randomly-generated starting points.
+              others in real time on randomly-generated starting points. (Coming soon...)
             </li>
           </ul>
           <h2>
-            Click an option to start!
+            Then click a button to the right!
           </h2>
         </div>
         <div className="buttons">
