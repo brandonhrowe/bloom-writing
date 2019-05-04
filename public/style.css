@@ -4,102 +4,144 @@ body {
   background-attachment: fixed;
   height: 100vh;
   margin: 0em;
-  padding: 0em; }
-  body button {
-    font-family: 'Josefin Sans', sans-serif; }
-  body a {
-    text-decoration: none; }
-  body label {
-    display: block; }
-  body .story-container {
-    display: flex;
-    flex-direction: column;
-    padding: 1em 3em; }
-    body .story-container .wordcount-save {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between; }
-      body .story-container .wordcount-save .save {
-        flex-basis: 10em;
-        margin: 1em;
-        opacity: 0;
-        transition: 0.5s all; }
-    body .story-container h1 {
-      text-align: center;
-      border-radius: 2em;
-      border-color: black; }
-  body .auth-form-container {
-    display: flex;
-    flex-direction: row;
-    font-size: 1.5em; }
-    body .auth-form-container h1 {
-      flex: 2;
-      padding-left: 5vw;
-      padding-right: 5vw; }
-  body .nav-bar-container {
-    padding: 1em; }
-  body .user-home {
-    padding-left: 5vw;
-    padding-right: 5vw;
-    display: flex; }
-    body .user-home .welcome {
-      flex: 1;
-      font-size: 1.5em; }
-    body .user-home .buttons {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: center; }
-      body .user-home .buttons button {
-        background-color: #f44336;
-        margin: 10px;
-        padding: 0px;
-        width: 20vw; }
-  body .story-bottom-container {
-    display: flex;
-    flex-direction: row; }
-    body .story-bottom-container .suggestion {
-      transition: 0.5s all;
-      flex: 1; }
-    body .story-bottom-container .definitions {
-      transition: 0.5s all;
-      flex: 1; }
-  body .stories-list-container {
-    padding-left: 5vw;
-    padding-bottom: 2em;
-    display: flex; }
-    body .stories-list-container h1 {
-      padding-top: 1.5em;
-      font-size: 3em; }
-    body .stories-list-container li {
-      padding: 1em;
-      font-size: 1.5em;
-      margin-left: 1vw;
-      margin-right: 20vw; }
-    body .stories-list-container li:hover {
-      color: #df5c05; }
-  body nav {
-    margin: 0em; }
-    body nav div {
-      margin: 0em;
-      display: flex;
-      align-items: center;
-      justify-content: space-around; }
-      body nav div h1 {
-        margin: 0em; }
-    body nav a {
-      display: inline-block;
-      font-size: 1.5em; }
-  body form {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    justify-content: space-between; }
-  body form div {
-    margin: 1em;
-    margin-left: 5em;
-    display: flex;
-    justify-content: space-between; }
-  body .highlight-hint {
-    text-align: center; }
+  padding: 0em;
+}
+body button {
+  font-family: 'Josefin Sans', sans-serif;
+}
+body a {
+  text-decoration: none;
+}
+body label {
+  display: block;
+}
+body .story-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 3em;
+}
+body .story-container .wordcount-save {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+body .story-container .wordcount-save .save {
+  flex-basis: 10em;
+  margin: 1em;
+  opacity: 0;
+  transition: 0.5s all;
+}
+body .story-container h1 {
+  text-align: center;
+  border-radius: 2em;
+  border-color: black;
+}
+body .auth-form-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5em;
+}
+body .auth-form-container h1 {
+  flex: 2;
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+body .nav-bar-container {
+  padding: 1em;
+}
+body .user-home {
+  padding-left: 5vw;
+  padding-right: 5vw;
+  display: flex;
+}
+body .user-home .welcome {
+  flex: 1;
+  font-size: 1.5em;
+}
+body .user-home .buttons {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+body .user-home .buttons button {
+  background-color: #f44336;
+  margin: 10px;
+  padding: 0px;
+  width: 20vw;
+}
+body .story-bottom-container {
+  display: flex;
+  flex-direction: row;
+}
+body .story-bottom-container .suggestion-container {
+  flex: 1;
+}
+body .suggestion, body .definitions {
+  transition: 0.5s all;
+}
+body .story-bottom-container .definitions-container {
+  flex: 1;
+}
+body .download {
+  font-size: 1.5em;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1em;
+}
+body .download a {
+  color: #ffffff;
+  background-color: #df5c05;
+  padding: 0.5em;
+  border-radius: 10px;
+}
+body .stories-list-container {
+  padding-left: 5vw;
+  padding-bottom: 2em;
+  display: flex;
+}
+body .stories-list-container h1 {
+  padding-top: 1.5em;
+  font-size: 3em;
+}
+body .stories-list-container li {
+  padding: 1em;
+  font-size: 1.5em;
+  margin-left: 1vw;
+  margin-right: 20vw;
+}
+body .stories-list-container li:hover {
+  color: #df5c05;
+}
+body nav {
+  margin: 0em;
+}
+body nav div {
+  margin: 0em;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+body nav div h1 {
+  margin: 0em;
+}
+body nav a {
+  display: inline-block;
+  font-size: 1.5em;
+}
+body form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+body form div {
+  margin: 1em;
+  margin-left: 5em;
+  display: flex;
+  justify-content: space-between;
+}
+body h4 {
+  text-align: center;
+}

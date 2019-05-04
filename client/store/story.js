@@ -20,7 +20,7 @@ const getStory = story => ({type: GET_STORY, story})
  * THUNK CREATORS
  */
 
- export const getStoryThunk = id => {
+export const getStoryThunk = id => {
   return async dispatch => {
     try {
       const {data} = await axios.get(`/api/stories/story/${id}`)
@@ -31,7 +31,7 @@ const getStory = story => ({type: GET_STORY, story})
   }
 }
 
- export const createStoryThunk = () => {
+export const createStoryThunk = () => {
   return async dispatch => {
     try {
       const {data} = await axios.get(`/api/stories/create`)
@@ -42,11 +42,24 @@ const getStory = story => ({type: GET_STORY, story})
   }
 }
 
- export const editStoryThunk = (id, text) => {
+export const editStoryThunk = (id, text) => {
   return async dispatch => {
     try {
       const {data} = await axios.put(`/api/stories/story/${id}`, text)
       dispatch(getStory(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+export const clearStoryThunk = (story, user) => {
+  return async dispatch => {
+    try {
+      await axios.delete(
+        `/api/stories/rtf/${user.username.split(' ').join('_')}_${story.id}`
+      )
+      dispatch(getStory(defaultStory))
     } catch (error) {
       console.log(error)
     }
@@ -61,7 +74,7 @@ export default function(state = defaultStory, action) {
     case GET_STORY:
       return action.story
     case EDIT_STORY:
-      return { ...state, text: action.story}
+      return {...state, text: action.story}
     default:
       return state
   }

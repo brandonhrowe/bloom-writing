@@ -1,16 +1,37 @@
 const router = require('express').Router()
-const {Story} = require('../db/models')
+const {Story, User} = require('../db/models')
 const Sentencer = require('sentencer')
 const unirest = require('unirest')
 const nlp = require('compromise')
 const randy = require('randy')
+const htmlToRtf = require('html-to-rtf')
+const fs = require('fs')
 module.exports = router
+
+const createDownloadFile = (story, user) => {
+  const html = `<div>
+      <p style="font-size: 60px;" align="center"><i>${story.prompt}</i></p>
+      <br/>
+      <br/>
+      <p align="center"><i>A story by ${user.username}</i></p>
+      <br/>
+      <br/>
+      <p>${story.text}</p>
+      </div>`
+  htmlToRtf.saveRtfInFile(
+    `${__dirname}/../../public/download/${user.username.split(' ').join('_')}_${
+      story.id
+    }.rtf`,
+    htmlToRtf.convertHtmlToRtf(html)
+  )
+}
 
 router.get('/story/:storyId', async (req, res, next) => {
   try {
     if (req.user) {
       const storyId = Number(req.params.storyId)
       const story = await Story.findByPk(storyId)
+      createDownloadFile(story, req.user)
       res.json(story)
     } else {
       res.status(400).send('Sorry, only the user can access this.')
@@ -115,6 +136,7 @@ router.get('/create', async (req, res, next) => {
         prompt,
         userId
       })
+      createDownloadFile(story, req.user)
       res.json(story)
     } else {
       res.status(400).send('Sorry, only the user can access this.')
@@ -129,7 +151,7 @@ router.put('/story', async (req, res, next) => {
     if (req.user) {
       const userId = req.user.dataValues.id
       const {storyId, text, length} = req.body
-      const story = await Story.update(
+      const [, [story]] = await Story.update(
         {
           text,
           length
@@ -138,14 +160,55 @@ router.put('/story', async (req, res, next) => {
           where: {
             userId,
             id: storyId
-          }
+          },
+          returning: true
         }
       )
+      await createDownloadFile(story, req.user)
       res.json(story)
     } else {
       res.status(400).send('Sorry, only the user can access this.')
     }
   } catch (err) {
     next(err)
+  }
+})
+
+router.get('/rtf/:storyId', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const storyId = Number(req.params.storyId)
+      const story = await Story.findByPk(storyId)
+      const user = await User.findByPk(story.userId)
+      const html = `<div>
+      <p style="font-size: 60px;" align="center"><i>${story.prompt}</i></p>
+      <br/>
+      <br/>
+      <p align="center"><i>A story by ${user.username}</i></p>
+      <br/>
+      <br/>
+      <p>${story.text}</p>
+      </div>`
+      htmlToRtf.saveRtfInFile(
+        `${__dirname}/../../public/download/${user.username
+          .split(' ')
+          .join('_')}_${story.id}.rtf`,
+        htmlToRtf.convertHtmlToRtf(html)
+      )
+      res.sendStatus(202)
+    } else {
+      res.status(400).send('Sorry, only the user can access this.')
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.delete('/rtf/:filename', async (req, res, next) => {
+  try {
+    fs.unlinkSync(`${__dirname}/../../public/download/${req.params.filename}.rtf`)
+    res.sendStatus(204)
+  } catch (error) {
+    next(error)
   }
 })

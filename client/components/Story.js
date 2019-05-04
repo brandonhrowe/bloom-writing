@@ -1,9 +1,15 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {createStoryThunk, getStoryThunk, editStoryThunk} from '../store'
+import {
+  createStoryThunk,
+  getStoryThunk,
+  editStoryThunk,
+  clearStoryThunk
+} from '../store'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import axios from 'axios'
+import history from '../history'
 
 class Story extends Component {
   constructor(props) {
@@ -118,9 +124,21 @@ class Story extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearStoryState(this.props.story, this.props.user)
+  }
+
   render() {
-    const {story} = this.props
-    const {length, saveVisibility, suggestionVisibility, suggestion, definitionVisibility, definitionsError, definitions} = this.state
+    const {story, user} = this.props
+    const {
+      length,
+      saveVisibility,
+      suggestionVisibility,
+      suggestion,
+      definitionVisibility,
+      definitionsError,
+      definitions
+    } = this.state
     return (
       <div className="story-container">
         <h1 className="prompt" onMouseUp={this.handleHighlight}>
@@ -131,7 +149,16 @@ class Story extends Component {
           </u>
         </h1>
         <div className="wordcount-save">
-          <h4 className="highlight-hint">Not sure what a word means?<br></br>Highlight it!</h4>
+          <div className="download">
+            <a
+              download
+              href={`/download/${user.username.split(' ').join('_')}_${
+                story.id
+              }.rtf`}
+            >
+              <u>DOWNLOAD</u>
+            </a>
+          </div>
           <div className="save" style={{opacity: saveVisibility}}>
             Story has been saved
           </div>
@@ -148,40 +175,44 @@ class Story extends Component {
         />
         <br />
         <div className="story-bottom-container">
-          <div
-            className="suggestion"
-            style={{opacity: suggestionVisibility}}
-          >
-            In Search of Lost <strike>Time</strike> Words? Maybe Something Like
-            This Could Go Next...<br /> <h3>"{suggestion}"</h3>
+          <div className="suggestion-container">
+            <h4>In Search of Lost <strike>Time</strike> Words? <br/>Wait a few seconds for a suggestion...<br /> </h4>
+            <div className="suggestion" style={{opacity: suggestionVisibility}}>
+              <h3>"{suggestion}"</h3>
+            </div>
           </div>
-          <div
-            className="definitions"
-            style={{opacity: definitionVisibility}}
-          >
-            {definitionsError ? (
-              <div>
-                <h2>Sorry, we cannot find a definition for that.</h2>
-              </div>
-            ) : (
-              <div>
-                <h2>Definitions for "{definitions.word}":</h2>
+          <div className="definitions-container">
+            <h4 className="highlight-hint">
+              Not sure what a word means?<br />Highlight it!
+            </h4>
+            <div
+              className="definitions"
+              style={{opacity: definitionVisibility}}
+            >
+              {definitionsError ? (
                 <div>
-                  {definitions.definitions.map(def => {
-                    return (
-                      <div className="defItem" key={def.definition}>
-                        <h4>
-                          <i>{def.partOfSpeech}</i>
-                        </h4>
-                        <h3>
-                          <i>{def.definition}</i>
-                        </h3>
-                      </div>
-                    )
-                  })}
+                  <h2>Sorry, we cannot find a definition for that.</h2>
                 </div>
-              </div>
-            )}
+              ) : (
+                <div>
+                  <h2>Definitions for "{definitions.word}":</h2>
+                  <div>
+                    {definitions.definitions.map(def => {
+                      return (
+                        <div className="defItem" key={def.definition}>
+                          <h4>
+                            <i>{def.partOfSpeech}</i>
+                          </h4>
+                          <h3>
+                            <i>{def.definition}</i>
+                          </h3>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -191,7 +222,8 @@ class Story extends Component {
 
 const mapState = state => {
   return {
-    story: state.story
+    story: state.story,
+    user: state.user
   }
 }
 
@@ -205,6 +237,9 @@ const mapDispatch = dispatch => {
     },
     saveStory(id, text) {
       dispatch(editStoryThunk(id, text))
+    },
+    clearStoryState(story, user) {
+      dispatch(clearStoryThunk(story, user))
     }
   }
 }

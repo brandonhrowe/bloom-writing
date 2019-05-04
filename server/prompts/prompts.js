@@ -72,6 +72,7 @@ router.post('/suggestion', async (req, res, next) => {
     let {text} = await req.body
     text = text.replace('<p>', '')
     text = text.replace('</p>', '')
+    //should also include other tags like spaces to remove
     const nouns = nlp(text)
       .nouns()
       .data()
