@@ -36,6 +36,7 @@ export const createStoryThunk = () => {
     try {
       const {data} = await axios.get(`/api/stories/create`)
       dispatch(getStory(data))
+      return data.id
     } catch (error) {
       console.log(error)
     }

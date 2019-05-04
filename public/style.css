@@ -71,6 +71,11 @@ body .user-home .buttons button {
   padding: 0px;
   width: 20vw;
 }
+body .user-home .button-room-of-own-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 body .story-bottom-container {
   display: flex;
   flex-direction: row;
@@ -78,7 +83,7 @@ body .story-bottom-container {
 body .story-bottom-container .suggestion-container {
   flex: 1;
 }
-body .suggestion, body .definitions {
+body .suggestion, body .definitions, body .promptLoad {
   transition: 0.5s all;
 }
 body .story-bottom-container .definitions-container {

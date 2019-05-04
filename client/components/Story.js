@@ -34,7 +34,7 @@ class Story extends Component {
     this.setState({
       length: text.split(' ').length
     })
-    if (this.state.length > 20) {
+    if (this.state.length > 10) {
       const {data} = await axios.post('/api/stories/suggestion', {text})
       let oldLength = text.length
       let newLength
@@ -52,11 +52,11 @@ class Story extends Component {
           })
         }
       }, 5000)
-      setTimeout(() => {
-        this.setState({
-          suggestionVisibility: 0
-        })
-      }, 30000)
+      // setTimeout(() => {
+      //   this.setState({
+      //     suggestionVisibility: 0
+      //   })
+      // }, 30000)
     }
   }
 
@@ -116,12 +116,11 @@ class Story extends Component {
     }
   }
 
-  async componentDidMount() {
-    if (this.props.match.url === '/story/new') {
-      await this.props.loadNewStory()
-    } else {
-      this.props.loadExistingStory(this.props.match.params.storyId)
-    }
+  componentDidMount() {
+    // if (this.props.match.url === '/story/new') {
+    //   await this.props.loadNewStory()
+    // }
+    this.props.loadExistingStory(this.props.match.params.storyId)
   }
 
   componentWillUnmount() {
@@ -176,14 +175,17 @@ class Story extends Component {
         <br />
         <div className="story-bottom-container">
           <div className="suggestion-container">
-            <h4>In Search of Lost <strike>Time</strike> Words? <br/>Wait a few seconds for a suggestion...<br /> </h4>
+            <h4>
+              In Search of Lost <strike>Time</strike> Words? <br />Wait a few
+              seconds for a suggestion...<hr />{' '}
+            </h4>
             <div className="suggestion" style={{opacity: suggestionVisibility}}>
               <h3>"{suggestion}"</h3>
             </div>
           </div>
           <div className="definitions-container">
             <h4 className="highlight-hint">
-              Not sure what a word means?<br />Highlight it!
+              Not sure what a word means?<br />Highlight it!<hr/>
             </h4>
             <div
               className="definitions"
