@@ -144,6 +144,16 @@ My initial attempts were sending the whole text back and forth, which created a 
 
 Clean up the style a little bit more. Ideally, user should be able to access either a new story or story list from a dropdown menu, rather than having to go back to the home page.
 
+### Improved Suggestions
+
+While the current suggestions functionality works fairly well at detecting some information from the user's input, it could certainly be improved through either machine learning or other APIs.
+
+### Synesketch
+
+http://krcadinac.com/synesketch/
+
+While not essential to the app, implementing this visual in the background, based off of the text written by the user, may be a nice feature.
+
 ### More Literary Puns
 
 I Vonnegut all the puns.
