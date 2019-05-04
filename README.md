@@ -98,6 +98,10 @@ When the prompt is clicked, an event listens for any text that is highlighted in
 
 Stories are saved as they go. Whenever a user stops typing, the text is sent back to the database and the story is saved for future use.
 
+### File Download
+
+Users can now download their story as an .rtf (rich text format) file. This not only includes the text of the user's prompt and story, but also any styling they implemented, such as making parts bold or italicized. The download feature was implemented using the html-to-rtf node module in conjunction with the fs (File System) module. In order to manage files, an .rtf file is only created when on a specific story's page. It will update as the story is saved and will be ready as soon as the user selects the "Download" button. Once the component for the story is unmounted, that file is removed in order to avoid clutter.
+
 # Technology
 
 Bloom was build using the following technology:
@@ -113,6 +117,9 @@ For supplying randomly generated verbs and adverbs, as well as getting definitio
 
 ### CKEditor
 For a clean, rich-text area for writing that includes bold, italics, etc.
+
+### html-to-rtf and fs
+For converting the CKEditor's rich text into a text file and moderating which files should be created/removed at any time.
 
 ### Randy
 For easily pulling random values from arrays.
@@ -133,17 +140,9 @@ Currently, only the first user experience is active. The issue that needs to be 
 
 My initial attempts were sending the whole text back and forth, which created a feedback loop if typing too quickly. I'll need to instead find a way to just send actions over the sockets.
 
-### Download
-
-Users should also be able to download their stories as a rich-text file. A potential hurdle will be accounting for styling (bold, italicized, etc.), which is contained within the text data for CKEditor.
-
 ### Layout/Clean Up
 
 Clean up the style a little bit more. Ideally, user should be able to access either a new story or story list from a dropdown menu, rather than having to go back to the home page.
-
-### Params Bug
-
-There is currently a slight bug where starting a new story requires going to the "/story/new" directory. Even though the story saves, if the user refreshes, they will create a new story. Ideally, a new story should be created and the URL should reflect the id of that story.
 
 ### More Literary Puns
 
