@@ -174,6 +174,91 @@ router.put('/story', async (req, res, next) => {
   }
 })
 
+router.post('/suggestion', async (req, res, next) => {
+  try {
+    let {text} = await req.body
+    text = text.replace('<p>', '')
+    text = text.replace('</p>', '')
+    //should also include other tags like spaces to remove
+    const nouns = nlp(text)
+      .nouns()
+      .data()
+      .map(nounObj => nounObj.main)
+    const commonNounsIndex = nlp(text)
+      .nouns()
+      .hasPlural()
+    const commonNouns = nouns.filter((noun, i) => commonNounsIndex[i])
+    const properNouns = nouns.filter((noun, i) => !commonNounsIndex[i])
+    const verbs = nlp(text)
+      .verbs()
+      .data()
+      .map(verbObj => verbObj.conjugations.Infinitive)
+    const tense = nlp(text)
+      .verbs()
+      .conjugation()[0]
+    let suggestion
+    const sentenceStarts = [
+      'After that, ',
+      'However, ',
+      'And then, ',
+      'Luckily, ',
+      'Fortunately, ',
+      'Unfortunately, ',
+      'To the dismay of everyone, ',
+      'But if one were to recall, '
+    ]
+    const suggestions = [
+      `${
+        properNouns.length ? randy.choice(properNouns) : 'the {{ noun }}'
+      } proceeded to ${randy.choice(verbs)}.`,
+      `the {{ noun }} was {{ adjective }}, waiting for ${
+        commonNouns.length ? randy.choice(commonNouns) : '{{ nouns }}'
+      }.`,
+      `there were even more ${
+        commonNouns.length ? randy.choice(commonNouns) : '{{ nouns }}'
+      } on the way.`,
+      `there was {{ an_adjective }} ${
+        commonNouns.length ? randy.choice(commonNouns) : '{{ nouns }}'
+      }`
+    ]
+
+    if (tense === 'Past') {
+      suggestion = nlp(
+        Sentencer.make(
+          `${randy.choice(sentenceStarts)}
+          ${randy.choice(suggestions)}`
+        )
+      )
+        .sentences()
+        .toPastTense()
+        .out()
+    } else if (tense === 'Present') {
+      suggestion = nlp(
+        Sentencer.make(
+          `${randy.choice(sentenceStarts)}
+          ${randy.choice(suggestions)}`
+        )
+      )
+        .sentences()
+        .toPresentTense()
+        .out()
+    } else if (tense === 'Future') {
+      suggestion = nlp(
+        Sentencer.make(
+          `${randy.choice(sentenceStarts)}
+          ${randy.choice(suggestions)}`
+        )
+      )
+        .sentences()
+        .toFutureTense()
+        .out()
+    }
+    res.send(suggestion)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.get('/rtf/:storyId', async (req, res, next) => {
   try {
     if (req.user) {

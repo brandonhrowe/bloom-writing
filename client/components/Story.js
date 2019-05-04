@@ -35,7 +35,7 @@ class Story extends Component {
       length: text.split(' ').length
     })
     if (this.state.length > 20) {
-      const {data} = await axios.post('/prompts/suggestion', {text})
+      const {data} = await axios.post('/api/stories/suggestion', {text})
       let oldLength = text.length
       let newLength
       setTimeout(() => {
@@ -149,6 +149,10 @@ class Story extends Component {
           </u>
         </h1>
         <div className="wordcount-save">
+          <h4>Word Count: {length}</h4>
+          <div className="save" style={{opacity: saveVisibility}}>
+            Story has been saved
+          </div>
           <div className="download">
             <a
               download
@@ -159,10 +163,6 @@ class Story extends Component {
               <u>DOWNLOAD</u>
             </a>
           </div>
-          <div className="save" style={{opacity: saveVisibility}}>
-            Story has been saved
-          </div>
-          <h4>Word Count: {length}</h4>
         </div>
         <CKEditor
           id="story"

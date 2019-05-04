@@ -65,7 +65,6 @@ const createApp = () => {
   app.use(passport.session())
 
   // auth and api routes
-  app.use('/prompts', require('./prompts'))
   app.use('/auth', require('./auth'))
   app.use('/api', require('./api'))
 
