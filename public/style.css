@@ -47,16 +47,19 @@ body .auth-form-container h1 {
   padding-right: 5vw;
 }
 body .nav-bar-container {
-  padding: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 body .user-home {
   padding-left: 5vw;
   padding-right: 5vw;
   display: flex;
+  justify-content: center;
 }
 body .user-home .welcome {
-  flex: 1;
+  flex: 0.75;
   font-size: 1.5em;
+  text-align: center;
 }
 body .user-home .buttons {
   flex: 1;
@@ -83,8 +86,12 @@ body .story-bottom-container {
 body .story-bottom-container .suggestion-container {
   flex: 1;
 }
-body .suggestion, body .definitions, body .promptLoad {
+body .suggestion,
+body .definitions,
+body .promptLoad {
   transition: 0.5s all;
+  margin-right: 2em;
+  margin-left: 2em;
 }
 body .story-bottom-container .definitions-container {
   flex: 1;
@@ -128,12 +135,23 @@ body nav div {
   align-items: center;
   justify-content: space-around;
 }
+body nav .nav-top-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1em;
+}
 body nav div h1 {
   margin: 0em;
 }
 body nav a {
   display: inline-block;
   font-size: 1.5em;
+}
+body nav .login-signup {
+  margin-right: 5em;
+  flex-basis: 15em;
+  display: flex;
+  justify-content: space-between;
 }
 body form {
   display: flex;
@@ -149,4 +167,43 @@ body form div {
 }
 body h4 {
   text-align: center;
+}
+body .dropbtn {
+  background-color: #f44336;
+  color: white;
+  padding: 0.5em;
+  font-size: 1.5em;
+}
+body .dropdown-container {
+  margin: 0em;
+  display: flex;
+}
+body .dropdown {
+  position: relative;
+  display: inline-block;
+  margin-left: 3em;
+  margin-right: 3em;
+}
+body .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px #000000;
+  z-index: 1;
+}
+body .dropdown-content div {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+body .dropdown-content div:hover {
+  background-color: #ddd;
+}
+body .dropdown:hover .dropdown-content {
+  display: block;
+}
+body .dropdown:hover .dropbtn {
+  background-color: #c42216;
 }

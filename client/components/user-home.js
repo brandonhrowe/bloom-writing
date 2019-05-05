@@ -26,22 +26,21 @@ class UserHome extends Component {
       <div className="user-home">
         <div className="welcome">
           <h1>Welcome, {username}, to BLOOM WRITING!</h1>
-          <h2>Select one of the modes from above to get started.</h2>
+          <h2>Select one of the modes from above to get started:</h2>
           <ul>
             <li>
-              <strong>A Room Of One's Own</strong> is to write your own stories
+              <strong><u>A Room Of One's Own</u></strong> is to write your own stories
               based off of random prompts and keep them privately saved.
             </li>
             <br />
             <li>
-              <strong>The Metamorphosis</strong> is for collaborating with
+              <strong><u>Metamorphoses</u></strong> is for collaborating with
               others in real time on randomly-generated starting points. (Coming
               soon...)
             </li>
           </ul>
-          <h2>Then click a button to the right!</h2>
         </div>
-        <div className="buttons">
+        {/* <div className="buttons">
           <div className="button-room-of-own-container">
             <button
               className="button-room-of-own"
@@ -71,7 +70,7 @@ class UserHome extends Component {
               <h1>See a List of Your Stories</h1>
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     )
   }
@@ -83,7 +82,6 @@ class UserHome extends Component {
 const mapState = state => {
   return {
     username: state.user.username,
-    story: state.story
   }
 }
 const mapDispatch = dispatch => {
