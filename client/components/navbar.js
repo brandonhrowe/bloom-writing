@@ -37,8 +37,6 @@ class Navbar extends Component {
             </h1>
             {isLoggedIn ? (
               <div className="dropdown-container">
-                {/* The navbar will show these links after you log in */}
-                {/* <Link to="/home">A Room Of One's Own</Link> */}
                 <div className="dropdown-buttons-container">
                   <div className="dropdown">
                     <button
@@ -70,7 +68,6 @@ class Navbar extends Component {
               </div>
             ) : (
               <div className="login-signup">
-                {/* The navbar will show these links before you log in */}
                 <Link to="/login">Login</Link>
                 <Link to="/signup">Sign Up</Link>
               </div>
