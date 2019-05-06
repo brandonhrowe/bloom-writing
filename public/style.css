@@ -93,6 +93,13 @@ body .promptLoad {
   margin-right: 2em;
   margin-left: 2em;
 }
+body .promptLoad {
+  position: absolute;
+  margin-top: 10em;
+  background-color: #ddd;
+  border-radius: 20px;
+  padding: 1em;
+}
 body .story-bottom-container .definitions-container {
   flex: 1;
 }
@@ -131,8 +138,7 @@ body nav {
 }
 body nav .nav-top-container {
   display: flex;
-  justify-content: space-evenly;
-  margin-top: 1em;
+  justify-content: flex-start;
 }
 body nav div h1 {
   margin: 0em;
@@ -140,13 +146,15 @@ body nav div h1 {
 body nav a {
   display: inline-block;
   font-size: 1.5em;
+  align-self: center;
+  color: #e92315;
 }
-body nav .login-signup {
+/* body nav .login-signup {
   margin-right: 5em;
   flex-basis: 15em;
   display: flex;
   justify-content: space-between;
-}
+} */
 body form {
   display: flex;
   flex-direction: column;
@@ -155,7 +163,7 @@ body form {
 }
 body form div {
   margin: 1em;
-  margin-left: 5em;
+  margin-left: 20%;
   display: flex;
   justify-content: space-between;
 }
@@ -164,16 +172,25 @@ body h4 {
 }
 body .dropbtn {
   background-color: #f44336;
-  color: white;
+  color: #ffffff;
   padding: 0.5em;
   font-size: 1em;
   width: 10em;
 }
-body .dropdown-container {
+body .dropdown-container,
+.login-signup {
+  flex: 1;
   margin: 0em;
+  margin-top: 1em;
   display: flex;
-  justify-content: space-between;
-  width: 80em;
+  justify-content: flex-start;
+  /* width: 80em; */
+}
+body .dropdown-container > *,
+.login-signup > * {
+  margin-left: 1em;
+  margin-right: 1em;
+  text-align: center;
 }
 body .dropdown-buttons-container {
   display: flex;
@@ -207,4 +224,14 @@ body .dropdown:hover .dropdown-content {
 }
 body .dropdown:hover .dropbtn {
   background-color: #c42216;
+}
+i {
+  border: solid #ffffff;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
 }
