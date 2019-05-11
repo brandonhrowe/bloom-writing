@@ -29,68 +29,58 @@ class Navbar extends Component {
     const {promptLoad} = this.state
     return (
       <div className="nav-bar-container">
-        <h1 onClick={() => history.push('/home')}>
-          BLOOM<br /> WRITING
-        </h1>
-        <div className="nav-toggle">&#9776;</div>
-        <nav className="nav-container-left">
-          {isLoggedIn ? (
-            <div className="dropdown-container">
-              <div className="dropdown">
-                <button
-                  type="button"
-                  className="dropbtn"
-                  onClick={() => history.push('/home')}
-                >
-                  A Room of One's Own <i className="arrow down" />
-                </button>
-                <div className="dropdown-content">
-                  <div onClick={this.handleNewStory}>Start a New Story</div>
-                  <div onClick={() => history.push('/yourstories')}>
-                    See Your Stories
+        <nav className="nav-top-container">
+            {isLoggedIn ? (
+              <div className="dropdown-container">
+                <h1 onClick={() => history.push('/home')}>
+                  BLOOM<br /> WRITING
+                </h1>
+                <div className="dropdown">
+                  <button
+                    type="button"
+                    className="dropbtn"
+                    onClick={() => history.push('/home')}
+                  >
+                    A Room of One's Own <i className="arrow down"></i>
+                  </button>
+                  <div className="dropdown-content">
+                    <div onClick={this.handleNewStory}>Start a New Story</div>
+                    <div onClick={() => history.push('/yourstories')}>
+                      See Your Stories
+                    </div>
                   </div>
                 </div>
+                <div className="dropdown">
+                  <button type="button" className="dropbtn">
+                    Metamorphoses (Coming Soon)
+                  </button>
+                </div>
+                <a href="#" onClick={handleLogout}>
+                  Logout
+                </a>
+                <h4 className="promptLoad" style={{opacity: promptLoad}}>
+                  Waiting for Godot. Or a prompt. Whichever comes first...
+                </h4>
               </div>
-              <div className="dropdown">
-                <button type="button" className="dropbtn">
-                  Metamorphoses (Coming Soon)
-                </button>
+            ) : (
+              <div className="login-signup">
+                <h1 onClick={() => history.push('/home')}>
+                  BLOOM<br /> WRITING
+                </h1>
+                <Link to="/login">Login</Link>
+                <Link to="/signup">Sign Up</Link>
               </div>
-              {/* <a href="#" onClick={handleLogout}>
-                Logout
-              </a> */}
-              <h4 className="promptLoad" style={{opacity: promptLoad}}>
-                Waiting for Godot. Or a prompt. Whichever comes first...
-              </h4>
-            </div>
-          ) : (
-            <div className="login-signup">
-              <h1 onClick={() => history.push('/home')}>
-                BLOOM<br /> WRITING
-              </h1>
-              <Link to="/login">Login</Link>
-              <Link to="/signup">Sign Up</Link>
-            </div>
-          )}
-        </nav>
-        <nav className="nav-container-right">
-          {isLoggedIn && (
-            <a href="#" onClick={handleLogout}>
-              Logout
-            </a>
-          )}
+            )}
         </nav>
       </div>
     )
   }
 }
-
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id
   }
 }
-
 const mapDispatch = dispatch => {
   return {
     handleLogout() {
@@ -101,5 +91,4 @@ const mapDispatch = dispatch => {
     }
   }
 }
-
 export default connect(mapState, mapDispatch)(Navbar)

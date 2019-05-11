@@ -49,8 +49,6 @@ body .auth-form-container h1 {
 body .nav-bar-container {
   padding-left: 1em;
   padding-right: 1em;
-  display: flex;
-  align-items: center;
 }
 body .user-home {
   padding-left: 5vw;
