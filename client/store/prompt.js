@@ -21,11 +21,8 @@ const getPrompt = prompt => ({type: GET_PROMPT, prompt})
 
 const nounCheckMeaningCloud = body => {
   //This is a helper function to determine if the noun is valid to use, and what form it is
-  console.log('in helper function, before anything')
   if (body.analysis_list) {
     //First base is if there is an analysis_list field, which will include what we want
-    console.log('body analysis list tag', body.analysis_list[0])
-    console.log('regex result', /NC-S/.test(body.analysis_list[0].tag))
     if (/NC-S/.test(body.analysis_list[0].tag)) {
       return {noun: body.form, form: 'singular'}
       //If word is singular noun, return the word and form to set on the state
@@ -63,7 +60,6 @@ export const setPrompt = () => async dispatch => {
     //define initial state; maybe set this as the default state?
     let adj = await axios.get('/prompts/word/random/adjective')
     finalWords.adjective = adj.data.word
-    console.log(adj)
     finalWords.adjectiveDefinition = adj.data.results.filter(result => result.partOfSpeech === "adjective")[0].definition
     //set adjective
     let adv = await axios.get('/prompts/word/random/adverb')

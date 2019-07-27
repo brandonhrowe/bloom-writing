@@ -3,9 +3,6 @@ import {connect} from 'react-redux'
 import {getStoriesThunk} from '../store'
 import history from '../history'
 
-/**
- * COMPONENT
- */
 class StoriesList extends Component {
   componentDidMount() {
     this.props.loadStories()
@@ -47,9 +44,6 @@ class StoriesList extends Component {
   }
 }
 
-/**
- * CONTAINER
- */
 const mapState = state => {
   return {
     user: state.user,

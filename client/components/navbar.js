@@ -28,7 +28,6 @@ class Navbar extends Component {
     const {handleLogout, isLoggedIn} = this.props
     const {promptLoad} = this.state
     return (
-      // <div className="nav-bar-container">
       <nav className="nav-top-container">
         {isLoggedIn ? (
           <div className="dropdown-container">
@@ -74,7 +73,6 @@ class Navbar extends Component {
           </div>
         )}
       </nav>
-      // </div>
     )
   }
 }

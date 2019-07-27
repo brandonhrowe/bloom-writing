@@ -87,6 +87,7 @@ router.get('/create', async (req, res, next) => {
         .header('X-RapidAPI-Host', 'wordsapiv1.p.rapidapi.com')
         .header('X-RapidAPI-Key', process.env.WORDS_API_KEY)
       verb = verb.body.word
+      //Even though verbPresentTense and verbFutureTense are currently never used, these variables exist should there be any new template sentences added in the future that could make use of them.
       let verbPresentTense
       let verbPastTense
       let verbFutureTense
@@ -291,7 +292,7 @@ router.get('/rtf/:storyId', async (req, res, next) => {
 
 router.delete('/rtf/:filename', async (req, res, next) => {
   try {
-    fs.unlinkSync(`${__dirname}/../../public/download/${req.params.filename}.rtf`)
+    await fs.unlinkSync(`${__dirname}/../../public/download/${req.params.filename}.rtf`)
     res.sendStatus(204)
   } catch (error) {
     next(error)

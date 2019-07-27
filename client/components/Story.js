@@ -9,6 +9,9 @@ import {
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import axios from 'axios'
+import WordCountSaveDownload from './WordCountSaveDownload'
+import BottomHeaders from './BottomHeaders'
+import BottomContent from './BottomContent'
 
 class Story extends Component {
   constructor(props) {
@@ -51,11 +54,6 @@ class Story extends Component {
           })
         }
       }, 5000)
-      // setTimeout(() => {
-      //   this.setState({
-      //     suggestionVisibility: 0
-      //   })
-      // }, 30000)
     }
   }
 
@@ -65,7 +63,7 @@ class Story extends Component {
     setTimeout(async () => {
       let newText = editor.getData()
       if (oldText === newText) {
-        const {data} = await axios.put(`/api/stories/story`, {
+        await axios.put(`/api/stories/story`, {
           storyId: id,
           text: oldText,
           length: this.state.length
@@ -82,7 +80,7 @@ class Story extends Component {
     }, 6000)
   }
 
-  async handleHighlight(event) {
+  async handleHighlight() {
     const text = await window
       .getSelection()
       .toString()
@@ -116,9 +114,6 @@ class Story extends Component {
   }
 
   componentDidMount() {
-    // if (this.props.match.url === '/story/new') {
-    //   await this.props.loadNewStory()
-    // }
     this.props.loadExistingStory(this.props.match.params.storyId)
   }
 
@@ -146,22 +141,12 @@ class Story extends Component {
               : 'Waiting for Godot. Or a prompt. Whichever comes first...'}
           </u>
         </h1>
-        <div className="wordcount-save">
-          <h4>Word Count: {length}</h4>
-          <div className="save" style={{opacity: saveVisibility}}>
-            Story has been saved
-          </div>
-          <div className="download">
-            <a
-              download
-              href={`/download/${user.username.split(' ').join('_')}_${
-                story.id
-              }.rtf`}
-            >
-              <u>DOWNLOAD</u>
-            </a>
-          </div>
-        </div>
+        <WordCountSaveDownload
+          length={length}
+          saveVisibility={saveVisibility}
+          user={user}
+          story={story}
+        />
         <CKEditor
           id="story"
           editor={ClassicEditor}
@@ -173,48 +158,16 @@ class Story extends Component {
         />
         <br />
         <div className="story-bottom-container">
-          <div className="suggestion-container">
-            <h4>
-              In Search of Lost <strike>Time</strike> Words? <br />Wait a few
-              seconds for a suggestion...<hr />{' '}
-            </h4>
-            <div className="suggestion" style={{opacity: suggestionVisibility}}>
-              <h3>"{suggestion}"</h3>
-            </div>
-          </div>
-          <div className="definitions-container">
-            <h4 className="highlight-hint">
-              Not sure what a word means?<br />Highlight it!<hr/>
-            </h4>
-            <div
-              className="definitions"
-              style={{opacity: definitionVisibility}}
-            >
-              {definitionsError ? (
-                <div>
-                  <h2>Sorry, we cannot find a definition for that.</h2>
-                </div>
-              ) : (
-                <div>
-                  <h2>Definitions for "{definitions.word}":</h2>
-                  <div>
-                    {definitions.definitions.map(def => {
-                      return (
-                        <div className="defItem" key={def.definition}>
-                          <h4>
-                            <i>{def.partOfSpeech}</i>
-                          </h4>
-                          <h3>
-                            <i>{def.definition}</i>
-                          </h3>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          <BottomHeaders />
+          <hr />
+          <br />
+          <BottomContent
+            suggestionVisibility={suggestionVisibility}
+            suggestion={suggestion}
+            definitionVisibility={definitionVisibility}
+            definitionsError={definitionsError}
+            definitions={definitions}
+          />
         </div>
       </div>
     )

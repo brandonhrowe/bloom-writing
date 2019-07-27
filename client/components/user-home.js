@@ -2,26 +2,9 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {createStoryThunk} from '../store'
 
-/**
- * COMPONENT
- */
 class UserHome extends Component {
-  constructor() {
-    super()
-    this.state = {
-      promptLoad: 0
-    }
-  }
-
-  componentWillUnmount() {
-    this.setState({
-      promptLoad: 0
-    })
-  }
-
   render() {
-    const {username, history, createNewStory} = this.props
-    const {promptLoad} = this.state
+    const {username} = this.props
     return (
       <div className="user-home">
         <div className="welcome">
@@ -40,45 +23,11 @@ class UserHome extends Component {
             </li>
           </ul>
         </div>
-        {/* <div className="buttons">
-          <div className="button-room-of-own-container">
-            <button
-              className="button-room-of-own"
-              type="button"
-              onClick={async () => {
-                this.setState({
-                  promptLoad: 1
-                })
-                const newStoryId = await createNewStory()
-                history.push(`/story/${newStoryId}`)
-              }}
-            >
-              <h1>Start a New Story</h1>
-            </button>
-            <h4 className="promptLoad" style={{opacity: promptLoad}}>
-              Waiting for Godot. Or a prompt. Whichever comes first...
-            </h4>
-          </div>
-          <div className="button-metamorphosis-container">
-            <button
-              className="button-metamorphosis"
-              type="button"
-              onClick={() => {
-                history.push('/yourstories')
-              }}
-            >
-              <h1>See a List of Your Stories</h1>
-            </button>
-          </div>
-        </div> */}
       </div>
     )
   }
 }
 
-/**
- * CONTAINER
- */
 const mapState = state => {
   return {
     username: state.user.username,

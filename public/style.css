@@ -82,7 +82,7 @@ body .user-home .button-room-of-own-container {
 }
 body .story-bottom-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 body .story-bottom-container .suggestion-container {
   flex: 1;
@@ -93,6 +93,8 @@ body .promptLoad {
   transition: 0.5s all;
   margin-right: 2em;
   margin-left: 2em;
+  flex: 1;
+  z-index: 10;
 }
 body .promptLoad {
   position: absolute;
@@ -109,12 +111,16 @@ body .download {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1em;
+  align-items: center;
 }
 body .download a {
   color: #ffffff;
   background-color: #df5c05;
   padding: 0.5em;
   border-radius: 10px;
+}
+body .download a:hover {
+  background-color: #d43c00;
 }
 body .stories-list-container {
   padding-left: 5vw;
@@ -243,6 +249,41 @@ i {
   font-size: 2em;
 }
 
+.bottom-headers, .bottom-content {
+  display: flex;
+  justify-content: space-around;
+}
+
+.bottom-header {
+  font-size: 1.5em;
+}
+
+.bottom-header.definition-header {
+  text-align: right;
+}
+
+.definition-for {
+  font-size: 1.75em;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.part-of-speech {
+  font-size: 1.25em;
+  text-align: center;
+  font-style: italic;
+}
+
+.definition {
+  font-size: 1.5em;
+  text-align: center;
+  font-style: italic;
+}
+
+hr {
+  width: 100%;
+}
+
 @media screen and (max-width: 600px) {
   .stories-list-container {
     flex-direction: column;
@@ -261,12 +302,28 @@ i {
     font-size: 1em;
   }
 
-  /* body .dropbtn {
-    width: 5em;
-  } */
-
   .dropdown.metamorphoses {
     display: none;
+  }
+
+  .bottom-header {
+    font-size: 0.75em;
+  }
+
+  .definition-for, .part-of-speech, .definition {
+    text-align: right;
+  }
+
+  .definition-for {
+    font-size: 1.25m;
+  }
+
+  .part-of-speech {
+    font-size: 0.75em;
+  }
+
+  .definition {
+    font-size: 1em;
   }
 
 }
