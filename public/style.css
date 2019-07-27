@@ -7,212 +7,207 @@ body {
   padding: 0em;
 }
 
-body button {
+button {
   font-family: 'Josefin Sans', sans-serif;
 }
-body a {
+a {
   text-decoration: none;
 }
-body label {
+label {
   display: block;
+  font-size: 2em;
 }
-body .story-container {
+.story-container {
   display: flex;
   flex-direction: column;
   padding: 1em 3em;
 }
-body .story-container .wordcount-save {
+.story-container .wordcount-save {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-body .story-container .wordcount-save .save {
+.story-container .wordcount-save .save {
   flex-basis: 10em;
   margin: 1em;
   opacity: 0;
   transition: 0.5s all;
 }
-body .story-container h1 {
+.story-container h1 {
   text-align: center;
   border-radius: 2em;
   border-color: black;
 }
-body .auth-form-container {
+.auth-form-container {
   display: flex;
   flex-direction: row;
-  font-size: 1.5em;
 }
-body .auth-form-container h1 {
+.auth-form-container h1 {
   flex: 2;
   padding-left: 5vw;
   padding-right: 5vw;
 }
-body .nav-bar-container {
+.nav-bar-container {
   padding-left: 1em;
   padding-right: 1em;
 }
-body .user-home {
+.user-home {
   padding-left: 5vw;
   padding-right: 5vw;
   display: flex;
   justify-content: center;
 }
-body .user-home .welcome {
+.user-home .welcome {
   flex: 0.75;
   font-size: 1.5em;
   text-align: center;
 }
-body .user-home .buttons {
+.user-home .buttons {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
 }
-body .user-home .buttons button {
+.user-home .buttons button {
   background-color: #f44336;
   margin: 10px;
   padding: 0px;
   width: 20vw;
 }
-body .user-home .button-room-of-own-container {
+.user-home .button-room-of-own-container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-body .story-bottom-container {
+.story-bottom-container {
   display: flex;
   flex-direction: column;
 }
-body .story-bottom-container .suggestion-container {
+.story-bottom-container .suggestion-container {
   flex: 1;
 }
-body .suggestion,
-body .definitions,
-body .promptLoad {
+.suggestion,
+.definitions,
+.promptLoad {
   transition: 0.5s all;
   margin-right: 2em;
   margin-left: 2em;
   flex: 1;
   z-index: 10;
 }
-body .promptLoad {
+.promptLoad {
   position: absolute;
   margin-top: 10em;
   background-color: #ddd;
   border-radius: 20px;
   padding: 1em;
 }
-body .story-bottom-container .definitions-container {
+.story-bottom-container .definitions-container {
   flex: 1;
 }
-body .download {
+.download {
   font-size: 1.5em;
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1em;
   align-items: center;
 }
-body .download a {
+.download a {
   color: #ffffff;
   background-color: #df5c05;
   padding: 0.5em;
   border-radius: 10px;
 }
-body .download a:hover {
+.download a:hover {
   background-color: #d43c00;
 }
-body .stories-list-container {
+.stories-list-container {
   padding-left: 5vw;
   padding-bottom: 2em;
   display: flex;
 }
-body .stories-list-container h1 {
+.stories-list-container h1 {
   padding-top: 1.5em;
   font-size: 3em;
 }
-body .stories-list-container li {
+.stories-list-container li {
   padding: 1em;
   font-size: 1.5em;
   margin-left: 1vw;
   margin-right: 20vw;
 }
-body .stories-list-container li:hover {
+.stories-list-container li:hover {
   color: #df5c05;
 }
-body nav {
+nav {
   margin: 0em;
 }
-body nav .nav-top-container {
+nav .nav-top-container {
   display: flex;
   justify-content: flex-start;
 }
-body nav div h1 {
+nav div h1 {
   margin: 0em;
 }
-body nav a {
+nav a {
   display: inline-block;
   font-size: 1.5em;
   align-self: center;
   color: #e92315;
 }
-/* body nav .login-signup {
-  margin-right: 5em;
-  flex-basis: 15em;
-  display: flex;
-  justify-content: space-between;
-} */
-body form {
+
+form {
   display: flex;
   flex-direction: column;
   flex: 1;
-  justify-content: space-between;
+  justify-content: flex-start;
+  margin: 2em;
 }
-body form div {
+form div {
   margin: 1em;
   margin-left: 20%;
   display: flex;
   justify-content: space-between;
 }
-body h4 {
+h4 {
   text-align: center;
 }
-body .dropbtn {
+.dropbtn {
   background-color: #f44336;
   color: #ffffff;
   padding: 0.5em;
   font-size: 1em;
   width: 10em;
 }
-body .dropdown-container,
+.dropdown-container,
 .login-signup {
   flex: 1;
   margin: 0em;
   margin-top: 1em;
   display: flex;
   justify-content: flex-start;
-  /* width: 80em; */
 }
-body .dropdown-options {
+.dropdown-options {
   display: flex;
 }
-body .dropdown-container > *,
+.dropdown-container > *,
 .login-signup > * {
   margin-left: 1em;
   margin-right: 1em;
   text-align: center;
 }
-body .dropdown-buttons-container {
+.dropdown-buttons-container {
   display: flex;
   margin: 0em;
 }
-body .dropdown {
+.dropdown {
   position: relative;
   display: inline-block;
   margin-left: 1em;
   margin-right: 1em;
 }
-body .dropdown-content {
+.dropdown-content {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
@@ -220,24 +215,22 @@ body .dropdown-content {
   box-shadow: 0px 8px 16px 0px #000000;
   z-index: 1;
 }
-body .dropdown-content div {
+.dropdown-content div {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
 }
-body .dropdown-content div:hover {
+.dropdown-content div:hover {
   background-color: #ddd;
 }
-body .dropdown:hover .dropdown-content {
+.dropdown:hover .dropdown-content {
   display: block;
 }
-body .dropdown:hover .dropbtn {
+.dropdown:hover .dropbtn {
   background-color: #c42216;
 }
 i {
-  /* border: solid #ffffff;
-  border-width: 0 3px 3px 0; */
   display: inline-block;
   padding: 3px;
 }
@@ -284,12 +277,25 @@ hr {
   width: 100%;
 }
 
+.welcome-message {
+  font-size: 3em;
+  margin: 1em;
+  flex: 2;
+}
+
+.submit-button {
+  background-color: #df5c05;
+  border-radius: 5px;
+  font-size: 1em;
+  padding: 0.5em 1em;
+}
+
 @media screen and (max-width: 600px) {
   .stories-list-container {
     flex-direction: column;
   }
 
-  body .dropdown-container {
+  .dropdown-container {
     justify-content: center;
   }
 
@@ -298,7 +304,7 @@ hr {
     align-self: center;
   }
 
-  body nav a {
+  nav a {
     font-size: 1em;
   }
 
@@ -326,4 +332,20 @@ hr {
     font-size: 1em;
   }
 
+  .welcome-message {
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  .auth-form-container {
+    flex-direction: column;
+  }
+
+  form div {
+    margin-left: 1em;
+  }
+
+  label {
+    font-size: 1.5em;
+  }
 }

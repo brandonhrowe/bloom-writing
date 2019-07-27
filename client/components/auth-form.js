@@ -12,34 +12,34 @@ const AuthForm = props => {
         {name === 'signup' && (
           <div>
             <label htmlFor="username">
-              <small>Username</small>
+              Username
             </label>
             <input name="username" type="text" />
           </div>
         )}
         <div>
           <label htmlFor="email">
-            <small>Email</small>
+            Email
           </label>
           <input name="email" type="text" />
         </div>
         <div>
           <label htmlFor="password">
-            <small>Password</small>
+            Password
           </label>
           <input name="password" type="password" />
         </div>
         <div>
-          <button type="submit">{displayName}</button>
+          <button className="submit-button" type="submit">{displayName}</button>
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
-      <h1>
+      <div className="welcome-message">
         WELCOME TO BLOOM WRITING!<br />
         <br />This is a place that provides users with a place to write,
         generating random prompts with which to start.<br /><br />Log In or Sign Up to
         start!
-      </h1>
+      </div>
     </div>
   )
 }
