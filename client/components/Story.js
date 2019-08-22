@@ -63,8 +63,7 @@ class Story extends Component {
     setTimeout(async () => {
       let newText = editor.getData()
       if (oldText === newText) {
-        await axios.put(`/api/stories/story`, {
-          storyId: id,
+        await axios.put(`/api/stories/${id}`, {
           text: oldText,
           length: this.state.length
         })

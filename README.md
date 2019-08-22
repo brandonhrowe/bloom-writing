@@ -100,7 +100,7 @@ Stories are saved as they go. Whenever a user stops typing, the text is sent bac
 
 ### File Download
 
-Users can now download their story as an .rtf (rich text format) file. This not only includes the text of the user's prompt and story, but also any styling they implemented, such as making parts bold or italicized. The download feature was implemented using the html-to-rtf node module in conjunction with the fs (File System) module. In order to manage files, an .rtf file is only created when on a specific story's page. It will update as the story is saved and will be ready as soon as the user selects the "Download" button. Once the component for the story is unmounted, that file is removed in order to avoid clutter.
+Users can now download their story as an .rtf (rich text format) file. This not only includes the text of the user's prompt and story, but also any styling they implemented, such as making parts bold or italicized. The download feature was implemented using the html-to-rtf node module in conjunction with the fs (File System) module. In order to manage files, an .rtf file is only created when on a specific story's page. It will update as the story is saved and will be ready as soon as the user selects the "Download" button. Once the component for the story is unmounted, that file is removed in order to avoid clutter. As a backup to removing files, Cron is running in the background and deleting any files from the directory that are over an hour old.
 
 # Technology
 
@@ -120,6 +120,10 @@ For a clean, rich-text area for writing that includes bold, italics, etc.
 
 ### html-to-rtf and fs
 For converting the CKEditor's rich text into a text file and moderating which files should be created/removed at any time.
+
+## Cron
+
+For deleting .rtf files from the download folder that are over an hour old, in case the main routes for this do not catch them.
 
 ### Randy
 For easily pulling random values from arrays.

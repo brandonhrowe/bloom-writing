@@ -6,9 +6,11 @@ const nlp = require('compromise')
 const randy = require('randy')
 const htmlToRtf = require('html-to-rtf')
 const fs = require('fs')
+const path = require('path')
 module.exports = router
 
 const createDownloadFile = (story, user) => {
+  // Creates rtf layout for file
   const html = `<div>
       <p style="font-size: 60px;" align="center"><i>${story.prompt}</i></p>
       <br/>
@@ -18,32 +20,24 @@ const createDownloadFile = (story, user) => {
       <br/>
       <p>${story.text}</p>
       </div>`
+  // Saves file to public/download folder
   htmlToRtf.saveRtfInFile(
-    `${__dirname}/../../public/download/${user.username.split(' ').join('_')}_${
-      story.id
-    }.rtf`,
+    path.join(
+      __dirname,
+      '..',
+      '..',
+      'public',
+      'download',
+      `${user.username.split(' ').join('_')}_${story.id}.rtf`
+    ),
     htmlToRtf.convertHtmlToRtf(html)
   )
 }
 
-router.get('/story/:storyId', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     if (req.user) {
-      const storyId = Number(req.params.storyId)
-      const story = await Story.findByPk(storyId)
-      createDownloadFile(story, req.user)
-      res.json(story)
-    } else {
-      res.status(400).send('Sorry, only the user can access this.')
-    }
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/all', async (req, res, next) => {
-  try {
-    if (req.user) {
+      // Get all of logged-in user's stories
       const userId = Number(req.user.dataValues.id)
       const stories = await Story.findAll({
         where: {
@@ -59,10 +53,29 @@ router.get('/all', async (req, res, next) => {
   }
 })
 
+router.get('/story/:storyId', async (req, res, next) => {
+  try {
+    if (req.user) {
+      // Pulls story based on Id
+      const storyId = Number(req.params.storyId)
+      const story = await Story.findByPk(storyId)
+      // Automatically generates rtf file to prepare for download
+      createDownloadFile(story, req.user)
+      res.json(story)
+    } else {
+      res.status(400).send('Sorry, only the user can access this.')
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/def/:text', async (req, res, next) => {
   try {
     if (req.user) {
+      // Get definition based off of text passed in
       const {text} = req.params
+      // Call WordsAPI for definitions
       const def = await unirest
         .get(`https://wordsapiv1.p.rapidapi.com/words/${text}/definitions`)
         .header('X-RapidAPI-Host', 'wordsapiv1.p.rapidapi.com')
@@ -76,10 +89,12 @@ router.get('/def/:text', async (req, res, next) => {
   }
 })
 
-router.get('/create', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
     if (req.user) {
+      // Create a new story, with a prompt also generated
       const userId = Number(req.user.dataValues.id)
+      // Calls WordsAPI for a verb to use
       let verb = await unirest
         .get(
           `https://wordsapiv1.p.rapidapi.com/words/?random=true&partOfSpeech=verb&letterPattern=^[A-Za-z]*$`
@@ -109,7 +124,7 @@ router.get('/create', async (req, res, next) => {
           .toFutureTense()
           .out()
       }
-
+      // Calls WordsAPI for adverb to use
       let adverb = await unirest
         .get(
           `https://wordsapiv1.p.rapidapi.com/words/?random=true&partOfSpeech=adverb&letterPattern=^[A-Za-z]*$`
@@ -117,6 +132,7 @@ router.get('/create', async (req, res, next) => {
         .header('X-RapidAPI-Host', 'wordsapiv1.p.rapidapi.com')
         .header('X-RapidAPI-Key', process.env.WORDS_API_KEY)
       adverb = adverb.body.word
+      // Array of skeleton sentences to be used for final prompt. The '{{}}' fields are for Sentencer to fill in the appropriate form of word in these spots
       const prompts = [
         `Write a story about {{ adjective }} {{ nouns }} that ${adverb} ${
           verbPastTense ? verbPastTense : verb
@@ -132,11 +148,14 @@ router.get('/create', async (req, res, next) => {
         `Write a story that begins, "If on {{ a_noun }}'s night {{ a_noun }}..."`,
         `Write a story about {{ a_noun }} that lives in {{ a_noun }}.`
       ]
+      // Uses Randy to pull a random string from the above array, and then calls Sentencer to fill in random nouns and adjectives in the appropriate placecs
       const prompt = Sentencer.make(randy.choice(prompts))
+      // Saves new story to backend
       const story = await Story.create({
         prompt,
         userId
       })
+      // Creates rtf file
       createDownloadFile(story, req.user)
       res.json(story)
     } else {
@@ -147,11 +166,13 @@ router.get('/create', async (req, res, next) => {
   }
 })
 
-router.put('/story', async (req, res, next) => {
+router.put('/:storyId', async (req, res, next) => {
   try {
     if (req.user) {
       const userId = req.user.dataValues.id
-      const {storyId, text, length} = req.body
+      const {text, length} = req.body
+      const storyId = Number(req.params.storyId)
+      // Updates both the text and length of the story in the database
       const [, [story]] = await Story.update(
         {
           text,
@@ -165,6 +186,7 @@ router.put('/story', async (req, res, next) => {
           returning: true
         }
       )
+      // Creates new rtf file with latest updates
       await createDownloadFile(story, req.user)
       res.json(story)
     } else {
@@ -177,27 +199,35 @@ router.put('/story', async (req, res, next) => {
 
 router.post('/suggestion', async (req, res, next) => {
   try {
+    // Pulls the text from the text editor
     let {text} = await req.body
+    // Removes p tags so that they are not included in final suggestion
+    //should also include other tags like spaces to remove
     text = text.replace('<p>', '')
     text = text.replace('</p>', '')
-    //should also include other tags like spaces to remove
+    // Pulls all the nouns found in the text and saves them to an array
     const nouns = nlp(text)
       .nouns()
       .data()
       .map(nounObj => nounObj.main)
+    // Separates common nouns by checking if a plural version exists
     const commonNounsIndex = nlp(text)
       .nouns()
       .hasPlural()
+    // Creates two new arrays for common and proper nouns
     const commonNouns = nouns.filter((noun, i) => commonNounsIndex[i])
     const properNouns = nouns.filter((noun, i) => !commonNounsIndex[i])
+    // Pulls all the verbs found in the text and saves them to an array
     const verbs = nlp(text)
       .verbs()
       .data()
       .map(verbObj => verbObj.conjugations.Infinitive)
+    // Checks the tense in which the text has been written
     const tense = nlp(text)
       .verbs()
       .conjugation()[0]
     let suggestion
+    // Array of potential starting points for the suggestion
     const sentenceStarts = [
       'After that, ',
       'However, ',
@@ -208,6 +238,7 @@ router.post('/suggestion', async (req, res, next) => {
       'To the dismay of everyone, ',
       'But if one were to recall, '
     ]
+    // Array of main clauses for suggestions, with the appropriate variables passed in. If it is unable to find any nouns pulled from Compromise, it will add new nouns from Sentencer.
     const suggestions = [
       `${
         properNouns.length ? randy.choice(properNouns) : 'the {{ noun }}'
@@ -222,7 +253,7 @@ router.post('/suggestion', async (req, res, next) => {
         commonNouns.length ? randy.choice(commonNouns) : '{{ nouns }}'
       }`
     ]
-
+    // Depending on the tense in which the original text was written, it will modify the suggestion tense to match if possible.
     if (tense === 'Past') {
       suggestion = nlp(
         Sentencer.make(
@@ -266,21 +297,8 @@ router.get('/rtf/:storyId', async (req, res, next) => {
       const storyId = Number(req.params.storyId)
       const story = await Story.findByPk(storyId)
       const user = await User.findByPk(story.userId)
-      const html = `<div>
-      <p style="font-size: 60px;" align="center"><i>${story.prompt}</i></p>
-      <br/>
-      <br/>
-      <p align="center"><i>A story by ${user.username}</i></p>
-      <br/>
-      <br/>
-      <p>${story.text}</p>
-      </div>`
-      htmlToRtf.saveRtfInFile(
-        `${__dirname}/../../public/download/${user.username
-          .split(' ')
-          .join('_')}_${story.id}.rtf`,
-        htmlToRtf.convertHtmlToRtf(html)
-      )
+      // Calls function to generate rtf file
+      createDownloadFile(story, user)
       res.sendStatus(202)
     } else {
       res.status(400).send('Sorry, only the user can access this.')
@@ -292,7 +310,17 @@ router.get('/rtf/:storyId', async (req, res, next) => {
 
 router.delete('/rtf/:filename', async (req, res, next) => {
   try {
-    await fs.unlinkSync(`${__dirname}/../../public/download/${req.params.filename}.rtf`)
+    // Deletes rtf file from public/download folder
+    await fs.unlinkSync(
+      path.join(
+        __dirname,
+        '..',
+        '..',
+        'public',
+        'download',
+        `${req.params.filename}.rtf`
+      )
+    )
     res.sendStatus(204)
   } catch (error) {
     next(error)

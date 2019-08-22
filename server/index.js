@@ -9,6 +9,7 @@ const db = require('./db')
 const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
+const clearFiles = require('./cron')
 //http and socketio are currently here for socketio testing for future features.
 const http = require('http')
 const socketio = require('socket.io')
@@ -98,6 +99,7 @@ const startListening = () => {
 const syncDb = () => db.sync()
 
 async function bootApp() {
+  clearFiles.start()
   await sessionStore.sync()
   await syncDb()
   await createApp()

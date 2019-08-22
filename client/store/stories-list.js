@@ -22,7 +22,7 @@ const getStories = stories => ({type: GET_STORIES, stories})
  export const getStoriesThunk = () => {
   return async dispatch => {
     try {
-      const {data} = await axios.get(`/api/stories/all`)
+      const {data} = await axios.get(`/api/stories`)
       dispatch(getStories(data))
     } catch (error) {
       console.log(error)
