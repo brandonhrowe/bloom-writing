@@ -20,7 +20,8 @@
     "start": "node server",
     "start-dev": "NODE_ENV='development' npm run build-client-watch & NODE_ENV='development' npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
-    "test": "NODE_ENV='test' mocha \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" \"./script/**/*.spec.js\" --require @babel/polyfill --require @babel/register"
+    "test": "NODE_ENV='test' mocha \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" \"./script/**/*.spec.js\" --require @babel/polyfill --require @babel/register",
+    "test-backend": "NODE_ENV='test' mocha \"./server/**/*.spec.js\" --require @babel/polyfill --require @babel/register"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -65,6 +66,7 @@
     "sentencer": "^0.2.0",
     "sequelize": "^5.3.1",
     "socket.io": "^2.2.0",
+    "supertest-session": "^4.0.0",
     "unirest": "^0.6.0"
   },
   "devDependencies": {

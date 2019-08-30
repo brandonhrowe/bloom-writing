@@ -46,7 +46,7 @@ router.get('/', async (req, res, next) => {
       })
       res.json(stories)
     } else {
-      res.status(400).send('Sorry, only the user can access this.')
+      res.status(401).send('Sorry, only the user can access this.')
     }
   } catch (err) {
     next(err)
@@ -63,7 +63,7 @@ router.get('/story/:storyId', async (req, res, next) => {
       createDownloadFile(story, req.user)
       res.json(story)
     } else {
-      res.status(400).send('Sorry, only the user can access this.')
+      res.status(401).send('Sorry, only the user can access this.')
     }
   } catch (err) {
     next(err)
@@ -82,7 +82,7 @@ router.get('/def/:text', async (req, res, next) => {
         .header('X-RapidAPI-Key', process.env.WORDS_API_KEY)
       res.json(def)
     } else {
-      res.status(400).send('Sorry, only the user can access this.')
+      res.status(401).send('Sorry, only the user can access this.')
     }
   } catch (err) {
     next(err)
@@ -157,9 +157,9 @@ router.post('/', async (req, res, next) => {
       })
       // Creates rtf file
       createDownloadFile(story, req.user)
-      res.json(story)
+      res.status(201).json(story)
     } else {
-      res.status(400).send('Sorry, only the user can access this.')
+      res.status(401).send('Sorry, only the user can access this.')
     }
   } catch (err) {
     next(err)
@@ -188,9 +188,9 @@ router.put('/:storyId', async (req, res, next) => {
       )
       // Creates new rtf file with latest updates
       await createDownloadFile(story, req.user)
-      res.json(story)
+      res.status(201).json(story)
     } else {
-      res.status(400).send('Sorry, only the user can access this.')
+      res.status(401).send('Sorry, only the user can access this.')
     }
   } catch (err) {
     next(err)
@@ -218,14 +218,15 @@ router.post('/suggestion', async (req, res, next) => {
     const commonNouns = nouns.filter((noun, i) => commonNounsIndex[i])
     const properNouns = nouns.filter((noun, i) => !commonNounsIndex[i])
     // Pulls all the verbs found in the text and saves them to an array
-    const verbs = nlp(text)
+    const originalVerbs = nlp(text)
       .verbs()
-      .data()
-      .map(verbObj => verbObj.conjugations.Infinitive)
+    let verbs
+    let tense
+    if (originalVerbs && originalVerbs.length){
+      verbs = originalVerbs.data().map(verbObj => verbObj.conjugations.Infinitive)
+      tense = originalVerbs.conjugation()[0]
+    }
     // Checks the tense in which the text has been written
-    const tense = nlp(text)
-      .verbs()
-      .conjugation()[0]
     let suggestion
     // Array of potential starting points for the suggestion
     const sentenceStarts = [
@@ -242,7 +243,7 @@ router.post('/suggestion', async (req, res, next) => {
     const suggestions = [
       `${
         properNouns.length ? randy.choice(properNouns) : 'the {{ noun }}'
-      } proceeded to ${randy.choice(verbs)}.`,
+      } proceeded to ${verbs && verbs.length ? randy.choice(verbs) : 'write'}.`,
       `the {{ noun }} was {{ adjective }}, waiting for ${
         commonNouns.length ? randy.choice(commonNouns) : '{{ nouns }}'
       }.`,
@@ -264,16 +265,6 @@ router.post('/suggestion', async (req, res, next) => {
         .sentences()
         .toPastTense()
         .out()
-    } else if (tense === 'Present') {
-      suggestion = nlp(
-        Sentencer.make(
-          `${randy.choice(sentenceStarts)}
-          ${randy.choice(suggestions)}`
-        )
-      )
-        .sentences()
-        .toPresentTense()
-        .out()
     } else if (tense === 'Future') {
       suggestion = nlp(
         Sentencer.make(
@@ -284,8 +275,18 @@ router.post('/suggestion', async (req, res, next) => {
         .sentences()
         .toFutureTense()
         .out()
+    } else {
+      suggestion = nlp(
+        Sentencer.make(
+          `${randy.choice(sentenceStarts)}
+          ${randy.choice(suggestions)}`
+        )
+      )
+        .sentences()
+        .toPresentTense()
+        .out()
     }
-    res.send(suggestion)
+    res.status(201).send(suggestion)
   } catch (error) {
     next(error)
   }
@@ -301,7 +302,7 @@ router.get('/rtf/:storyId', async (req, res, next) => {
       createDownloadFile(story, user)
       res.sendStatus(202)
     } else {
-      res.status(400).send('Sorry, only the user can access this.')
+      res.status(401).send('Sorry, only the user can access this.')
     }
   } catch (error) {
     next(error)
