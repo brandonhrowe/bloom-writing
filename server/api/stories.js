@@ -201,10 +201,11 @@ router.post('/suggestion', async (req, res, next) => {
   try {
     // Pulls the text from the text editor
     let {text} = await req.body
-    // Removes p tags so that they are not included in final suggestion
-    //should also include other tags like spaces to remove
-    text = text.replace('<p>', '')
-    text = text.replace('</p>', '')
+    // Removes HTML tags and trailing spaces from text
+    let regex1 = /(&nbsp;|<\/p>|<\/strong>|<\/i>|)/gm
+    let regex2 = /(<p>|<strong>|<i>)/gm
+    text = text.replace(regex1, '')
+    text = text.replace(regex2, ' ')
     // Pulls all the nouns found in the text and saves them to an array
     const nouns = nlp(text)
       .nouns()
@@ -243,7 +244,7 @@ router.post('/suggestion', async (req, res, next) => {
     const suggestions = [
       `${
         properNouns.length ? randy.choice(properNouns) : 'the {{ noun }}'
-      } proceeded to ${verbs && verbs.length ? randy.choice(verbs) : 'write'}.`,
+      } continue to ${verbs && verbs.length ? randy.choice(verbs) : 'write'}.`,
       `the {{ noun }} was {{ adjective }}, waiting for ${
         commonNouns.length ? randy.choice(commonNouns) : '{{ nouns }}'
       }.`,

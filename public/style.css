@@ -191,6 +191,9 @@ h4 {
 .dropdown-options {
   display: flex;
 }
+.dropdown-options div, button {
+  cursor: pointer;
+}
 .dropdown-container > *,
 .login-signup > * {
   margin-left: 1em;
@@ -288,6 +291,18 @@ hr {
   border-radius: 5px;
   font-size: 1em;
   padding: 0.5em 1em;
+}
+
+.suggestion-button {
+  padding: 0.5em;
+  margin: 0.5em;
+  background-color: #f1f1f1;
+  font-size: 1em;
+}
+
+.suggestion-button:hover {
+  background-color: #ddd;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 600px) {

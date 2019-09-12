@@ -6,12 +6,16 @@ const BottomContent = props => {
     suggestion,
     definitionVisibility,
     definitionsError,
-    definitions
+    definitions,
+    addSuggestionToStory,
+    clearSuggestion
   } = props
   return (
     <div className="bottom-content">
       <div className="suggestion" style={{opacity: suggestionVisibility}}>
         <h3>"{suggestion}"</h3>
+        <button type="button" className="suggestion-button" onClick={() => addSuggestionToStory(suggestion)}>Add To Story</button>
+        <button type="button" className="suggestion-button" onClick={clearSuggestion}>Clear</button>
       </div>
       <div className="definitions" style={{opacity: definitionVisibility}}>
         {definitionsError ? (

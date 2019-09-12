@@ -23,12 +23,15 @@ class Story extends Component {
       saveVisibility: 0,
       definitionVisibility: 0,
       definitions: {},
-      definitionsError: true
+      definitionsError: true,
+      editor: null
     }
 
     this.suggestion = this.suggestion.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleHighlight = this.handleHighlight.bind(this)
+    this.addSuggestionToStory = this.addSuggestionToStory.bind(this)
+    this.clearSuggestion = this.clearSuggestion.bind(this)
   }
 
   async suggestion(event, editor) {
@@ -112,6 +115,22 @@ class Story extends Component {
     }
   }
 
+  addSuggestionToStory(suggestion) {
+    const {editor} = this.state
+    let data = editor.getData()
+    data += `<p>${suggestion}</p>`
+    editor.setData(data)
+    this.setState({
+      suggestionVisibility: 0
+    })
+  }
+
+  clearSuggestion(){
+    this.setState({
+      suggestionVisibility: 0
+    })
+  }
+
   componentDidMount() {
     this.props.loadExistingStory(this.props.match.params.storyId)
   }
@@ -150,6 +169,9 @@ class Story extends Component {
           id="story"
           editor={ClassicEditor}
           data={story.text ? story.text : '<p>Start your story here!</p>'}
+          onInit={editor => {
+            this.setState({editor})
+          }}
           onChange={(event, editor) => {
             this.suggestion(event, editor)
             this.handleSave(event, editor)
@@ -166,6 +188,8 @@ class Story extends Component {
             definitionVisibility={definitionVisibility}
             definitionsError={definitionsError}
             definitions={definitions}
+            addSuggestionToStory={this.addSuggestionToStory}
+            clearSuggestion={this.clearSuggestion}
           />
         </div>
       </div>
