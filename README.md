@@ -121,7 +121,7 @@ For a clean, rich-text area for writing that includes bold, italics, etc.
 ### html-to-rtf and fs
 For converting the CKEditor's rich text into a text file and moderating which files should be created/removed at any time.
 
-## Cron
+### Cron
 
 For deleting .rtf files from the download folder that are over an hour old, in case the main routes for this do not catch them.
 

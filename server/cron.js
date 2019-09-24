@@ -1,4 +1,4 @@
-const CronJob = require('cron').CronJob
+const {CronJob} = require('cron')
 const fs = require('fs')
 const path = require('path')
 const fileDir = path.join(__dirname, '..', 'public', 'download')
