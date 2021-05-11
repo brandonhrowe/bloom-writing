@@ -7,7 +7,8 @@ const Story = db.define('story', {
     allowNull: false
   },
   text: {
-    type: Sequelize.TEXT
+    type: Sequelize.TEXT,
+    defaultValue: ''
   },
   length: {
     type: Sequelize.INTEGER,
@@ -16,7 +17,7 @@ const Story = db.define('story', {
 })
 
 Story.afterCreate(story => {
-  story.length = story.text.split(' ').length
+  story.length = story.text ? story.text.split(' ').length : 0
 })
 
 module.exports = Story
