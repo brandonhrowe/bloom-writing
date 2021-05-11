@@ -99,11 +99,15 @@ const startListening = () => {
 const syncDb = () => db.sync()
 
 async function bootApp() {
-  clearFiles.start()
-  await sessionStore.sync()
-  await syncDb()
-  await createApp()
-  await startListening()
+  try {
+    clearFiles.start()
+    await sessionStore.sync()
+    await syncDb()
+    await createApp()
+    await startListening()
+  } catch (error) {
+    console.log('error booting:', error)
+  }
 }
 
 if (require.main === module) {
