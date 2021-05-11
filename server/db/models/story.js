@@ -7,8 +7,7 @@ const Story = db.define('story', {
     allowNull: false
   },
   text: {
-    type: Sequelize.TEXT,
-    defaultValue: 'Start your story here!'
+    type: Sequelize.TEXT
   },
   length: {
     type: Sequelize.INTEGER,

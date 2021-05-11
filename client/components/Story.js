@@ -168,7 +168,8 @@ class Story extends Component {
         <CKEditor
           id="story"
           editor={ClassicEditor}
-          data={story.text ? story.text : '<p>Start your story here!</p>'}
+          data={story.text}
+          config={{placeholder: 'Start your story here!'}}
           onInit={editor => {
             this.setState({editor})
           }}
