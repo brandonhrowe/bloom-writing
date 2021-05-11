@@ -305,6 +305,15 @@ hr {
   cursor: pointer;
 }
 
+.dropdown.metamorphoses {
+  cursor: default;
+  pointer-events: none;
+}
+
+.dropdown.metamorphoses button {
+  background-color: rgb(99, 55, 55);
+}
+
 @media screen and (max-width: 600px) {
   .stories-list-container {
     flex-direction: column;
