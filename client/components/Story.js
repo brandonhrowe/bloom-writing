@@ -17,7 +17,7 @@ class Story extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      length: 4,
+      length: 0,
       suggestion: '',
       suggestionVisibility: 0,
       saveVisibility: 0,

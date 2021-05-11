@@ -12,7 +12,7 @@ const Story = db.define('story', {
   },
   length: {
     type: Sequelize.INTEGER,
-    defaultValue: 4
+    defaultValue: 0
   }
 })
 
